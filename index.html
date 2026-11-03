@@ -15,7 +15,7 @@
 <meta property="og:title" content="⚠️ Final Notice: Breach of the No-Contact Agreement">
 <meta property="og:description" content="Addressed to: __HER_NAME__. Penalty due: ₹5,000. Immediate response required.">
 <meta property="og:url" content="__SITE_URL__/">
-<meta property="og:image" content="__SITE_URL__/preview.jpg">
+<meta property="og:image" content="__SITE_URL__/preview.jpg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -155,6 +155,25 @@ p{margin:.5em 0}
 .checks{list-style:none; padding:0; margin:0; text-align:left; display:grid; gap:8px; font-family:var(--type); font-size:.95rem}
 .checks li{opacity:0; transform:translateX(-6px); transition:opacity .3s, transform .3s}
 .checks li.on{opacity:1; transform:none}
+
+/* ---------- Name check (final notice) ---------- */
+.card.alert{border-color:#F0C9CE; padding-top:34px}
+.card.alert::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:10px;
+  border-radius:var(--radius) var(--radius) 0 0;
+  background:repeating-linear-gradient(-45deg, var(--ribbon) 0 14px, var(--ink) 14px 28px);
+}
+.tag-alert{color:#fff; background:var(--ribbon); animation:alertPulse 1.6s ease-in-out infinite}
+@keyframes alertPulse{0%,100%{box-shadow:0 0 0 0 rgba(224,49,75,.45)} 60%{box-shadow:0 0 0 9px rgba(224,49,75,0)}}
+.docket{
+  margin:14px 0 4px; padding:10px 14px; text-align:left;
+  font-family:var(--type); font-size:.86rem; line-height:1.4;
+  background:#FFF8EC; border:1.5px dashed #E3B8A0; border-radius:12px;
+}
+.docket > div{display:flex; gap:10px; padding:3px 0}
+.docket dt{flex:0 0 5.6em; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em; font-size:.78rem; padding-top:.1em}
+.docket dd{margin:0; font-weight:700; overflow-wrap:anywhere}
+.docket .hot{color:var(--ribbon-dark)}
 
 /* ---------- Identify / exit ---------- */
 .field{display:block; text-align:left; margin-top:16px}
@@ -434,6 +453,9 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
 .steam path{animation:steam 2.6s ease-in-out infinite; opacity:.0}
 .steam path:nth-child(2){animation-delay:.6s}
 .steam path:nth-child(3){animation-delay:1.2s}
+.mascot.fume .steam path{animation-duration:1.4s}
+.mascot.fume .steam path:nth-child(2){animation-delay:.3s}
+.mascot.fume .steam path:nth-child(3){animation-delay:.6s}
 @keyframes steam{0%{opacity:0; transform:translateY(8px)} 40%{opacity:.9} 100%{opacity:0; transform:translateY(-10px)}}
 .tear-stream{animation:flow .6s linear infinite}
 @keyframes flow{to{stroke-dashoffset:-16}}
@@ -467,11 +489,17 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
 
   <!-- 1. Name check -->
   <section class="screen active" id="name" aria-labelledby="name-h">
-    <div class="card">
-      <span class="tag">🔒 Identity check</span>
-      <div class="mascot-slot" data-mood="happy"></div>
-      <h1 id="name-h" tabindex="-1">Before we begin…</h1>
-      <p class="muted">This website contains highly classified information. (It's mostly about chai and choco lava cake.)</p>
+    <div class="card alert">
+      <span class="tag tag-alert">⚠️ Final notice</span>
+      <div class="mascot-slot" data-mood="stern"></div>
+      <h1 id="name-h" tabindex="-1">A breach has been recorded.</h1>
+      <dl class="docket">
+        <div><dt>Case no.</dt><dd>NCA/2026/001</dd></div>
+        <div><dt>Matter</dt><dd>Breach of Clause 1</dd></div>
+        <div><dt>Penalty</dt><dd>₹5,000</dd></div>
+        <div><dt>Status</dt><dd class="hot">Awaiting response</dd></div>
+      </dl>
+      <p class="muted small">Only the party named in this notice may open it. Identity verification is mandatory.</p>
       <p class="question">Is your name <span data-her></span>?</p>
       <div class="btn-row">
         <button class="btn btn-yes" data-go="verify">Yes, I'm <span data-her></span></button>
@@ -922,6 +950,8 @@ const CONFIG = {
   const BROWS = {
     worried: S("M67 116 L86 109", 4) + S("M114 109 L133 116", 4),
     raised: S("M68 117 L87 117", 4) + S("M113 108 Q123 98 133 108", 4),
+    angry: `<path d="M64 112 L91 112 L91 127 L64 119 Z M109 112 L136 112 L136 119 L109 127 Z" fill="currentColor"/>`
+      + S("M65 119 L90 127", 5) + S("M110 127 L135 119", 5),
   };
   const MOUTHS = {
     smile: S("M87 148 Q100 162 113 148"),
@@ -931,6 +961,7 @@ const CONFIG = {
     wail: `<path d="M86 161 Q100 138 114 161 Z" fill="${INK}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`,
     open: `<path d="M83 145 Q100 176 117 145 Z" fill="${INK}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><ellipse cx="100" cy="154" rx="8" ry="4.5" fill="#FF6F91"/>`,
     flat: S("M89 154 L112 150"),
+    stern: S("M89 156 Q100 151 111 156"),
   };
   const TEARS = {
     drip: `<path class="tear-drip" d="M76 138 q-5 8 0 11 q5 -3 0 -11z" fill="#7EC8E3"/><path class="tear-drip" style="animation-delay:.8s" d="M124 138 q-5 8 0 11 q5 -3 0 -11z" fill="#7EC8E3"/>`,
@@ -940,9 +971,9 @@ const CONFIG = {
   // Arms take the body's colours: [stroke, hand fill]
   const ARMS = (pose, [arm, hand]) => {
     const limb = (d, x, y) => `<path d="${d}" fill="none" stroke="${arm}" stroke-width="7" stroke-linecap="round"/><circle cx="${x}" cy="${y}" r="7" fill="${hand}" stroke="${arm}" stroke-width="3"/>`;
-    return pose === "up"
-      ? `<g class="arms-up">${limb("M46 112 Q24 98 22 72", 22, 70)}${limb("M154 112 Q176 98 178 72", 178, 70)}</g>`
-      : `<g>${limb("M46 122 Q28 132 25 150", 25, 152)}${limb("M154 122 Q172 132 175 150", 175, 152)}</g>`;
+    if (pose === "up") return `<g class="arms-up">${limb("M46 112 Q24 98 22 72", 22, 70)}${limb("M154 112 Q176 98 178 72", 178, 70)}</g>`;
+    if (pose === "hips") return `<g stroke-linejoin="round">${limb("M46 116 L22 136 L44 156", 44, 156)}${limb("M154 116 L178 136 L156 156", 156, 156)}</g>`;
+    return `<g>${limb("M46 122 Q28 132 25 150", 25, 152)}${limb("M154 122 Q172 132 175 150", 175, 152)}</g>`;
   };
   const BODIES = {
     chai: {
@@ -988,6 +1019,7 @@ const CONFIG = {
     content:    { eyes: "closedHappy", mouth: "smile" },
     ecstatic:   { eyes: "closedHappy", mouth: "open", arms: "up", stars: true, cls: "party" },
     suspicious: { eyes: "squint", brows: "raised", mouth: "flat" },
+    stern:      { eyes: "dots", brows: "angry", mouth: "stern", arms: "hips", blush: false, cls: "fume" },
   };
   function mascot(mood = "happy", size = "", kind = "chai") {
     const m = MOODS[mood] || MOODS.happy;
@@ -1000,9 +1032,9 @@ const CONFIG = {
       ${b.shadow}
       ${ARMS(m.arms, b.colors)}
       ${b.body}
-      <g ${b.face}>
-        <ellipse cx="64" cy="146" rx="9.5" ry="5.5" fill="#FF8FAB" opacity=".75"/>
-        <ellipse cx="136" cy="146" rx="9.5" ry="5.5" fill="#FF8FAB" opacity=".75"/>
+      <g ${b.face} color="${b.colors[1]}">
+        ${m.blush === false ? "" : `<ellipse cx="64" cy="146" rx="9.5" ry="5.5" fill="#FF8FAB" opacity=".75"/>
+        <ellipse cx="136" cy="146" rx="9.5" ry="5.5" fill="#FF8FAB" opacity=".75"/>`}
         ${m.brows ? BROWS[m.brows] : ""}
         ${EYES[m.eyes]}
         ${MOUTHS[m.mouth]}

@@ -13,7 +13,9 @@ from repository **secrets** and publishes the result to GitHub Pages.
 
 ## The flow
 
-1. **Identity check**: "Is your name ___?" No → asks once more → "Please identify yourself" → asks them to exit calmly.
+1. **Identity check**, dressed up as a scary **Final notice** so it looks like *she's* the one in breach: a stern
+   chai cup (hands on hips), a case number and a ₹5,000 penalty. The link preview (`preview.jpg` and the `og:` tags) says the same.
+   "Is your name ___?" No → asks once more → "Please identify yourself" → asks them to exit calmly.
    If they then type her name in the box, it calls them out.
 2. **Verification** (fake scan) → **Official Notice**: the sender confesses to the breach, with a scoreboard
    (him: 1 breach; her: 0 breaches, ₹5,000 untouched 🏆) → **The plan**: chai (black tea, milk not invited),
