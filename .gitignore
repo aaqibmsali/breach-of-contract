@@ -1,0 +1,3 @@
+# Built output (contains the real names/number filled in from secrets)
+_site/
+__pycache__/

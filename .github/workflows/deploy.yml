@@ -1,0 +1,43 @@
+name: Deploy to GitHub Pages
+
+# Fills in the names and number from repository secrets, then publishes.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Build site from secrets
+        env:
+          HER_NAME: ${{ secrets.HER_NAME }}
+          MY_NAME: ${{ secrets.MY_NAME }}
+          WHATSAPP_NUMBER: ${{ secrets.WHATSAPP_NUMBER }}
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+        run: python3 build.py
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v5
