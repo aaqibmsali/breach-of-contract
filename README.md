@@ -27,13 +27,15 @@ from repository **secrets** and publishes the result to GitHub Pages.
    She then **signs the Date Agreement with her finger** (the original contract was famously unsigned), and a
    choco lava cake drops from the sky as the official **seal**. If she skips signing, it signs her name in handwriting for her.
 5. **Booking form**:
-   - An **availability calendar**: weekends are free all day (✨), weekdays are nights only (🌙), and taken dates (📚)
-     can't be picked. Picking a weekday locks the time to Night.
+   - An **availability calendar** offering only *this weekend and the next one*, a rolling window counted from
+     the day she opens it. Weekends are free all day (✨), weekdays are nights only (🌙), and taken dates (📚)
+     can't be picked. Picking a weekday locks the time to Night. Anything later is an icy 🥶 "too late" day:
+     tapping it shows a rotating, wildly dramatic denial ("the kids will have no clothes, and they will not survive").
    - Then the fun activity, a black‑tea chai order (with a "Department of Dairy Regulation" for regular milk),
      dessert (every option is choco lava cake) and notes.
    - Submitting shows a **ticket** with a countdown and a **Send on WhatsApp** button with the message already filled in.
 
-   To change availability, edit `TAKEN`, `WEEKDAY_TIMES` and `BOOK_AHEAD_DAYS` in the
+   To change availability, edit `TAKEN`, `WEEKDAY_TIMES`, `WEEKENDS_AHEAD` and the `DENIALS` lines in the
    "Availability calendar" block of `index.html`.
 
 ## Setup

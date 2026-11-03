@@ -378,6 +378,7 @@ legend em{font-style:normal; font-weight:400; color:var(--ink-soft); font-size:.
 .cal-day.weekend{background:#FFF1C9; border-color:#F3CF6B}
 .cal-day.taken{background:#EFE6DC; border-color:#E2D3C3; color:#A08877}
 .cal-day.taken .n{text-decoration:line-through}
+.cal-day.late{background:repeating-linear-gradient(135deg, #EEF4FA 0 6px, #E3ECF6 6px 12px); border-color:#D3E0EE; color:#7D93AA}
 .cal-day.today{box-shadow:inset 0 0 0 1.5px var(--ink-soft)}
 .cal-day.off{opacity:.3; background:transparent; border-color:transparent; cursor:default}
 .cal-day.sel{background:var(--ink); border-color:var(--ink); color:#fff}
@@ -697,7 +698,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <form id="date-form" novalidate>
         <div class="field">
           <span id="date-label">Date</span>
-          <p class="avail">Weekends: wide open, all day ✨ · Weekdays: I'm free at night only, like a superhero 🦇</p>
+          <p class="avail">Weekends: wide open, all day ✨ · Weekdays: I'm free at night only, like a superhero 🦇 · Book by <b id="avail-last"></b>: after that, the kids can't wait. 🥶</p>
           <div class="cal" role="group" aria-labelledby="date-label">
             <div class="cal-head">
               <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">‹</button>
@@ -706,7 +707,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
             </div>
             <div class="cal-dow" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
             <div class="cal-grid" id="cal-grid"></div>
-            <div class="cal-legend" aria-hidden="true"><span><i class="lg"></i>Weekend: all day</span><span>🌙 Weekday: nights</span><span>📚 Taken</span></div>
+            <div class="cal-legend" aria-hidden="true"><span><i class="lg"></i>Weekend: all day</span><span>🌙 Weekday: nights</span><span>📚 Taken</span><span>🥶 Too late</span></div>
           </div>
           <input type="hidden" id="f-date" name="date">
           <p class="cal-pick" id="cal-pick" aria-live="polite"></p>
@@ -1387,13 +1388,28 @@ const CONFIG = {
   const prettyDate = (s) => new Intl.DateTimeFormat("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(parseLocal(s));
 
   /* ---------------- Availability calendar ---------------- */
-  // Edit freely: dates that are taken, which times work on weekdays, how far ahead to offer.
+  // Edit freely: dates that are taken, which times work on weekdays, how many weekends to offer.
   const TAKEN = { "2026-11-08": "I have book club that day. 📚 Being well‑read takes commitment." };
   const WEEKDAY_TIMES = ["Night"];
-  const BOOK_AHEAD_DAYS = 120;
+  const WEEKENDS_AHEAD = 2; // this weekend + the next one; anything later is "too late"
 
   const toStr = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
   const addDays = (s, n) => { const d = parseLocal(s); d.setDate(d.getDate() + n); return toStr(d); };
+  const shortDate = (s) => new Intl.DateTimeFormat("en-IN", { weekday: "short", day: "numeric", month: "short" }).format(parseLocal(s));
+  // Rolling window: the Sunday that ends the last offered weekend (counted from today, Mon-first weeks)
+  function lastBookable() {
+    const t = todayStr(), dow = (parseLocal(t).getDay() + 6) % 7; // Mon=0 … Sun=6
+    return addDays(t, 6 - dow + 7 * (WEEKENDS_AHEAD - 1));
+  }
+  const DENIALS = [
+    (n, by) => `Denied. 🙅 By then the kids will have no clothes, and they will not survive. Pick a date by ${by}.`,
+    (n, by) => `${n} days away? The kids are shivering. Dramatically. They won't make it. 🥶 Pick a date by ${by}.`,
+    (n, by) => `Rejected by the Orphanage Survival Committee. 🚨 Reason: the kids need clothes before then, or they won't survive.`,
+    (n, by) => `In that timeline the kids are wearing leaves. Leaves are not clothes. They will not survive. 🍂 Pick a date by ${by}.`,
+    (n, by) => `No. The kids' survival depends on a date by ${by}. No pressure. (So much pressure.) 🧦`,
+  ];
+  let denials = 0;
+  const denialText = (s) => DENIALS[denials++ % DENIALS.length](daysUntil(s), shortDate(lastBookable()));
   const isWeekend = (s) => { const g = parseLocal(s).getDay(); return g === 0 || g === 6; };
   const monthKey = (d) => d.getFullYear() * 12 + d.getMonth();
   const calGrid = $("#cal-grid"), calPick = $("#cal-pick"), timeNote = $("#time-note");
@@ -1402,20 +1418,21 @@ const CONFIG = {
 
   function renderCal() {
     const y = calMonth.getFullYear(), m = calMonth.getMonth();
-    const today = todayStr(), last = addDays(today, BOOK_AHEAD_DAYS);
+    const today = todayStr(), last = lastBookable();
+    $("#avail-last").textContent = shortDate(last);
     $("#cal-title").textContent = new Intl.DateTimeFormat("en-IN", { month: "long", year: "numeric" }).format(calMonth);
     const lead = (new Date(y, m, 1).getDay() + 6) % 7; // Monday-first grid
     const count = new Date(y, m + 1, 0).getDate();
     let html = "<span></span>".repeat(lead);
     for (let d = 1; d <= count; d++) {
       const s = `${y}-${pad2(m + 1)}-${pad2(d)}`;
-      const off = s < today || s > last, taken = !off && TAKEN[s], weekend = isWeekend(s);
-      const cls = ["cal-day", weekend ? "weekend" : "weekday", taken && "taken", off && "off",
+      const off = s < today, late = s > last, taken = !off && !late && TAKEN[s], weekend = isWeekend(s);
+      const cls = ["cal-day", weekend ? "weekend" : "weekday", taken && "taken", off && "off", late && "late",
         s === today && "today", s === selectedDate && "sel"].filter(Boolean).join(" ");
-      const tag = off ? "" : taken ? "📚" : weekend ? "✨" : "🌙";
-      const what = taken ? "taken" : weekend ? "weekend, free all day" : "weekday, free at night";
+      const tag = off ? "" : late ? "🥶" : taken ? "📚" : weekend ? "✨" : "🌙";
+      const what = late ? "too late" : taken ? "taken" : weekend ? "weekend, free all day" : "weekday, free at night";
       html += `<button type="button" class="${cls}" data-date="${s}" aria-label="${prettyDate(s)}, ${what}"`
-        + ` aria-pressed="${s === selectedDate}"${off ? " disabled" : ""}${taken ? ' aria-disabled="true"' : ""}>`
+        + ` aria-pressed="${s === selectedDate}"${off ? " disabled" : ""}${taken || late ? ' aria-disabled="true"' : ""}>`
         + `<span class="n">${d}</span><span class="t" aria-hidden="true">${tag}</span></button>`;
     }
     calGrid.innerHTML = html;
@@ -1456,10 +1473,16 @@ const CONFIG = {
     const btn = e.target.closest(".cal-day");
     if (!btn || btn.disabled) return;
     const s = btn.dataset.date;
+    const shake = () => { btn.classList.remove("shake"); void btn.offsetWidth; btn.classList.add("shake"); };
+    if (s > lastBookable()) {
+      $("#e-date").textContent = denialText(s);
+      shake(); vibrate([40, 30, 40, 30, 80]);
+      emojiRain(["🥶", "❄️", "🧦", "🧣"], 12);
+      return;
+    }
     if (TAKEN[s]) {
       $("#e-date").textContent = `${prettyDate(s)} is taken: ${TAKEN[s]}`;
-      btn.classList.remove("shake"); void btn.offsetWidth; btn.classList.add("shake");
-      vibrate([20, 30, 20]);
+      shake(); vibrate([20, 30, 20]);
       return;
     }
     pickDate(s);
@@ -1495,6 +1518,7 @@ const CONFIG = {
     const time = (form.querySelector('input[name="time"]:checked') || {}).value;
     if (!date) { $("#e-date").textContent = "Pick a day on the calendar. Weekends are extra welcome. ✨"; ok = false; }
     else if (date < todayStr()) { $("#e-date").textContent = "Time travel isn't in the ₹2,000 budget. Pick a future date."; ok = false; }
+    else if (date > lastBookable()) { $("#e-date").textContent = denialText(date); ok = false; }
     else if (TAKEN[date]) { $("#e-date").textContent = `${prettyDate(date)} is taken: ${TAKEN[date]}`; ok = false; }
     else if (!isWeekend(date) && time && !WEEKDAY_TIMES.includes(time)) { $("#e-date").textContent = "Weekdays are nights only, I'm afraid. 🌙"; ok = false; }
     if (!act) { $("#e-activity").textContent = "Pick your fun activity. It's the best part."; ok = false; }
