@@ -364,9 +364,11 @@ legend em{font-style:normal; font-weight:400; color:var(--ink-soft); font-size:.
   transition:background-color .15s, color .15s, border-color .15s, transform .15s;
 }
 .chip span:active{transform:scale(.96)}
-.chip input:checked + span{background:var(--ink); border-color:var(--ink); color:#fff}
+/* Chip state is mirrored onto the label as classes (see syncChips): Safari doesn't reliably
+   repaint "input:checked + span" / "input:disabled + span" when the state changes from script. */
+.chip.is-on span{background:var(--ink); border-color:var(--ink); color:#fff}
 .err{color:var(--ribbon-dark); font-size:.88rem; font-weight:500; min-height:1.2em; margin:6px 0 0}
-.chip input:disabled + span{opacity:.38; text-decoration:line-through; cursor:not-allowed}
+.chip.is-off span{opacity:.38; text-decoration:line-through; cursor:not-allowed}
 
 /* Availability calendar */
 .avail{margin:0 0 8px; font-size:.86rem; color:var(--ink-soft); line-height:1.4}
@@ -1535,6 +1537,16 @@ const CONFIG = {
     timeNote.textContent = !selectedDate ? ""
       : weekday ? "Weekdays: nights only 🌙 (daytime is booked by adulting)."
       : "It's a weekend, so anything goes. ✨";
+    syncChips();
+  }
+
+  // Mirror each chip's checked/disabled state onto its label (the styles key off these classes)
+  function syncChips() {
+    $$(".chip", form).forEach((label) => {
+      const input = label.querySelector("input");
+      label.classList.toggle("is-on", input.checked);
+      label.classList.toggle("is-off", input.disabled);
+    });
   }
 
   function pickDate(s) {
@@ -1568,7 +1580,9 @@ const CONFIG = {
   $("#cal-next").addEventListener("click", () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 1); renderCal(); });
 
   const form = $("#date-form");
+  syncChips(); // initial state (e.g. the default dessert)
   form.addEventListener("change", (e) => {
+    syncChips();
     if (e.target.name === "activity") {
       const other = e.target.value === "__other";
       $("#other-wrap").classList.toggle("show", other);
