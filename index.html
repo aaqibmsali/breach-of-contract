@@ -245,6 +245,17 @@ input::placeholder, textarea::placeholder{color:#B59C8B}
 }
 .ask-hint{min-height:2.8em; margin:12px 0 0; font-size:.9rem; line-height:1.4; color:var(--ink-soft)}
 
+/* Desktop warning overlay */
+.desk{
+  position:fixed; inset:0; z-index:80; overflow:auto; display:grid; place-items:center; padding:24px 16px;
+  background-color:var(--cream);
+  background-image:radial-gradient(rgba(200,100,59,.13) 1.4px, transparent 1.6px); background-size:22px 22px;
+}
+.desk-card{width:100%; max-width:460px; background:var(--paper); border:1.5px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:30px 28px 22px; text-align:center; animation:pop .4s cubic-bezier(.3,1.6,.5,1)}
+.desk-qr{width:184px; height:184px; margin:18px auto 8px; padding:12px; background:#fff; border:2px solid var(--line); border-radius:16px}
+.desk-qr:empty{display:none}
+.desk-qr svg{display:block; width:100%; height:100%}
+
 /* Retro error dialog */
 .modal{position:fixed; inset:0; z-index:60; display:grid; place-items:center; padding:16px; background:rgba(59,36,24,.45)}
 .modal[hidden]{display:none}
@@ -826,6 +837,19 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
 
 </main>
 
+<!-- Desktop warning: this notice is meant for phones (m-web) -->
+<div class="desk" id="desk" hidden role="dialog" aria-modal="true" aria-labelledby="desk-h" aria-describedby="desk-p">
+  <div class="desk-card">
+    <span class="tag">🖥️ Desktop detected</span>
+    <div class="mascot-slot" data-mood="suspicious"></div>
+    <h1 id="desk-h" tabindex="-1">This notice is only valid on m‑web.</h1>
+    <p id="desk-p">Per the Totally Non‑Binding Agreement, official notices must be opened on a phone. Desktop viewing voids the chai, the choco lava cake and the warranty. 📱</p>
+    <div class="desk-qr" id="desk-qr" aria-hidden="true"></div>
+    <p class="muted small">Scan this with your phone's camera, or open the link from WhatsApp on your phone.</p>
+    <button class="linkish" id="desk-anyway">Proceed on desktop anyway (the <span data-me-wf></span> accepts no liability)</button>
+  </div>
+</div>
+
 <!-- Error 418 dialog -->
 <div class="modal" id="err-modal" hidden>
   <div class="win" role="alertdialog" aria-modal="true" aria-labelledby="err-title" aria-describedby="err-desc">
@@ -988,6 +1012,40 @@ const CONFIG = {
     $$(".mascot-slot", root).forEach((slot) => { slot.innerHTML = mascot(slot.dataset.mood, slot.dataset.size || "", slot.dataset.kind || "chai"); });
   }
   paintMascots();
+
+  /* ---------------- Desktop warning (this notice is m-web only) ---------------- */
+  // A mouse-style pointer, a non-mobile browser and no multi-touch = a computer.
+  // (iPads with a trackpad claim to be Macs, hence the touch check; touch laptops get a pass too.)
+  const isDesktop = () =>
+    matchMedia("(hover: hover) and (pointer: fine)").matches
+    && !/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
+    && !(navigator.userAgentData && navigator.userAgentData.mobile)
+    && !(navigator.maxTouchPoints > 1);
+  let deskDismissed = false;
+  try { deskDismissed = sessionStorage.getItem("desk-ok") === "1"; } catch (_) {}
+  if (isDesktop() && !deskDismissed) {
+    $("#desk").hidden = false;
+    document.documentElement.style.overflow = "hidden";
+    $("#desk-h").focus({ preventScroll: true });
+    // QR code of this page, so she can just scan it with her phone (library only loads here)
+    const s = document.createElement("script");
+    s.src = "vendor/qrcode-generator-2.0.4.js";
+    s.onload = () => {
+      try {
+        const qr = qrcode(0, "M");
+        qr.addData(location.origin + location.pathname);
+        qr.make();
+        $("#desk-qr").innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+      } catch (_) {} // no QR: the text below still explains what to do
+    };
+    document.head.appendChild(s);
+  }
+  $("#desk-anyway").addEventListener("click", () => {
+    $("#desk").hidden = true;
+    document.documentElement.style.overflow = "";
+    try { sessionStorage.setItem("desk-ok", "1"); } catch (_) {}
+    $("#name-h").focus({ preventScroll: true });
+  });
 
   /* ---------------- Screens ---------------- */
   let current = "name";

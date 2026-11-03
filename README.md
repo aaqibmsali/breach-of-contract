@@ -44,6 +44,12 @@ from repository **secrets** and publishes the result to GitHub Pages.
    To change availability, edit `TAKEN`, `WEEKDAY_TIMES`, `BOOK_BY` and the `DENIALS` lines in the
    "Availability calendar" block of `index.html`.
 
+**Desktop warning:** on a computer (mouse‑style pointer, non‑mobile browser, no multi‑touch), the page opens with
+"This notice is only valid on m‑web" and a QR code of the link to scan with a phone. A small "proceed anyway" link
+dismisses it for that tab. Phones and tablets never see it. The QR code is drawn by
+[qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) 2.0.4 (MIT, © Kazuhiko Arase), vendored
+unmodified in `vendor/` and loaded only on desktop.
+
 ## Setup
 
 These settings aren't in the GitHub mobile app. Use github.com in your phone's browser; if a menu is missing, switch to "Desktop site".

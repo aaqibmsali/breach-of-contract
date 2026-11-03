@@ -63,4 +63,5 @@ shutil.rmtree(OUT, ignore_errors=True)
 OUT.mkdir()
 (OUT / "index.html").write_text(page, encoding="utf-8")
 shutil.copy2(ROOT / "preview.jpg", OUT / "preview.jpg")
+shutil.copytree(ROOT / "vendor", OUT / "vendor")  # QR library, loaded only on desktop
 print("Built _site/ " + ("with" if number else "without") + " a WhatsApp number.")
