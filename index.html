@@ -127,7 +127,7 @@ p{margin:.5em 0}
   display:inline-flex; align-items:center; justify-content:center; gap:.4em;
   text-decoration:none; line-height:1.15;
 }
-.btn:focus-visible, .chip input:focus-visible + span, .ribbon:focus-visible, .linkish:focus-visible, input:focus-visible, textarea:focus-visible{
+.btn:focus-visible, .chip input:focus-visible + span, .linkish:focus-visible, input:focus-visible, textarea:focus-visible{
   outline:3px solid var(--marigold); outline-offset:3px;
 }
 .btn:active{transform:translateY(3px)}
@@ -270,36 +270,66 @@ input::placeholder, textarea::placeholder{color:#B59C8B}
 @keyframes wave{from{transform:rotate(-4deg)} to{transform:rotate(4deg)}}
 .divider{border:0; border-top:2px dashed var(--line); margin:22px 0 16px}
 
-.ribbon{
-  position:relative; display:block; width:100%; height:110px; margin:12px 0 4px;
-  border:0; padding:0; background:none; cursor:pointer;
-  -webkit-tap-highlight-color:transparent; touch-action:manipulation;
+.duo{display:flex; justify-content:center; align-items:flex-end; gap:2px; margin-bottom:4px}
+.duo .mascot{width:124px; margin:0}
+.duo .mascot-slot + .mascot-slot .mascot{animation-delay:-.35s}
+
+/* The Date Agreement: sign with a finger, sealed by a falling choco lava cake */
+.agreement{
+  position:relative; text-align:left; margin:14px 0 0;
+  font-family:var(--type); font-size:.9rem; line-height:1.5;
+  background:#FFF8EC; border:1.5px solid var(--line); border-radius:14px; padding:14px 14px 12px;
+  background-image:repeating-linear-gradient(transparent 0 25px, rgba(200,100,59,.10) 25px 26px);
 }
-.ribbon::before, .ribbon::after{
-  content:""; position:absolute; top:12px; bottom:4px; width:12px; border-radius:6px;
-  background:linear-gradient(90deg, #C98B1E, #F5C451 45%, #C98B1E);
+.agreement .title{font-weight:700; text-align:center; letter-spacing:.06em; margin-bottom:8px}
+.terms{list-style:none; margin:0 0 12px; padding:0; display:grid; gap:3px}
+.sig-wrap{position:relative; background:#fff; border:2px dashed #D9C3AE; border-radius:12px; height:118px}
+#sig{position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:none; cursor:crosshair; border-radius:10px}
+#sig.locked{pointer-events:none; cursor:default}
+.sig-x{position:absolute; left:12px; bottom:26px; font-family:var(--display); font-weight:700; color:#B59C8B; pointer-events:none}
+.sig-wrap::after{content:""; position:absolute; left:34px; right:14px; bottom:30px; border-bottom:1.5px solid #D9C3AE; pointer-events:none}
+.sig-label{position:absolute; left:34px; bottom:6px; font-size:.75rem; color:var(--ink-soft); pointer-events:none}
+.sig-clear{position:absolute; right:6px; top:2px; margin:0; font-size:.8rem}
+.seal-row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:12px}
+.seal-copy b{display:block; font-size:.92rem}
+.seal-copy span{display:block; font-size:.8rem; color:var(--ink-soft); line-height:1.35}
+.seal-spot{position:relative; flex:0 0 112px; height:96px}
+.seal-ph{position:absolute; inset:6px; border:2px dashed #D9C3AE; border-radius:50%; display:grid; place-items:center; font-family:var(--display); color:#B59C8B; font-size:1.2rem; transition:opacity .2s}
+.splat{position:absolute; inset:0; width:100%; height:100%; transform:scale(0); transform-origin:50% 60%}
+.seal-cake{position:absolute; left:50%; top:-18px; width:78px; margin-left:-39px; opacity:0; z-index:3}
+.mascot.seal{width:78px; margin:0}
+.seal-label{position:absolute; left:50%; bottom:10px; transform:translateX(-50%) scale(0); font-family:var(--type); font-weight:700; font-size:.78rem; letter-spacing:.14em; color:#FFE7C2; background:#3B1A0B; padding:1px 8px; border-radius:6px; z-index:4}
+.seal-spot.sealed .seal-ph{opacity:0}
+.seal-spot.sealed .seal-cake{animation:cakeDrop 1s cubic-bezier(.45,0,.55,1) both}
+.seal-spot.sealed .splat{animation:splatIn .45s cubic-bezier(.3,1.7,.5,1) .5s both}
+.seal-spot.sealed .seal-label{animation:labelIn .4s cubic-bezier(.3,1.7,.5,1) .85s both}
+@keyframes cakeDrop{
+  0%{opacity:1; transform:translateY(-520px) rotate(-30deg)}
+  50%{opacity:1; transform:translateY(0) rotate(0) scale(1,1)}
+  58%{transform:translateY(10px) scale(1.3,.68)}
+  72%{transform:translateY(-16px) scale(.92,1.1)}
+  86%{transform:translateY(2px) scale(1.06,.95)}
+  100%{opacity:1; transform:translateY(0) scale(1)}
 }
-.ribbon::before{left:6px} .ribbon::after{right:6px}
-.r-half{
-  position:absolute; top:42px; height:30px; width:calc(50% - 16px);
-  background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,.0) 0 10px, rgba(255,255,255,.14) 10px 12px),
-    linear-gradient(180deg, #FF5A72, var(--ribbon) 45%, var(--ribbon-dark));
-  box-shadow:0 3px 6px rgba(168,31,53,.3);
-  transition:transform .9s cubic-bezier(.5,0,.6,1), opacity .9s ease .3s;
-}
-.r-half.l{left:16px; border-radius:4px 0 0 4px; transform-origin:0 50%}
-.r-half.r{right:16px; border-radius:0 4px 4px 0; transform-origin:100% 50%}
-.r-bow{position:absolute; left:50%; top:57px; font-size:3.1rem; line-height:1; transform:translate(-50%,-50%); transition:transform .9s cubic-bezier(.5,0,.6,1), opacity .6s ease .4s; z-index:2}
-.r-scissors{position:absolute; top:57px; left:-30px; font-size:2.2rem; line-height:1; transform:translateY(-50%); opacity:0; z-index:3}
-.ribbon.snipping .r-scissors{animation:snip .5s ease-in forwards}
-@keyframes snip{0%{left:-30px; opacity:1} 80%{opacity:1} 100%{left:calc(50% - 18px); opacity:1}}
-.ribbon.cut .r-scissors{animation:none; opacity:0}
-.ribbon.cut .r-half.l{transform:rotate(58deg) translateX(-10px); opacity:.0}
-.ribbon.cut .r-half.r{transform:rotate(-58deg) translateX(10px); opacity:.0}
-.ribbon.cut .r-bow{transform:translate(-50%, 90px) rotate(160deg); opacity:0}
-.ribbon:not(.cut) .r-bow{animation:bob 1.6s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translate(-50%,-50%)} 50%{transform:translate(-50%,-58%)}}
+@keyframes splatIn{from{transform:scale(0) rotate(-20deg)} to{transform:scale(1) rotate(0)}}
+@keyframes labelIn{from{transform:translateX(-50%) scale(0) rotate(-12deg)} to{transform:translateX(-50%) scale(1) rotate(-6deg)}}
+.sig-hint{min-height:1.4em; margin:8px 0 0}
+
+/* Scoreboard on the notice */
+.standings{font-family:var(--type); font-size:.82rem; border:1.5px solid var(--line); border-radius:12px; overflow:hidden; margin:0 0 18px; background:#fff}
+.st-head{text-align:center; letter-spacing:.18em; font-size:.72rem; padding:6px; background:#F3E6D8; color:var(--ink-soft)}
+.st-row{display:grid; grid-template-columns:1.2fr 1fr 1.25fr; gap:6px; align-items:center; padding:8px 10px; border-top:1.5px dashed var(--line)}
+.st-row .st-name{font-family:var(--display); font-weight:600; font-size:.92rem}
+.st-row .st-amt{text-align:right}
+.st-row.champ{background:linear-gradient(90deg, #FFF3C4, #FFE7A0); font-weight:700}
+.st-row.champ .st-amt{color:#8A5A00}
+
+/* Plan + receipt extras */
+.plan li.bonus{border-style:dashed; border-color:#C9A27E; background:#FFF9F0}
+.plan li.bonus .ico{background:#F1DCCB}
+.receipt .fine{display:block; font-size:.74rem; color:var(--ink-soft); margin-top:6px}
+.note{min-height:0; margin:8px 0 0; font-size:.86rem; color:#8A5A00}
+.note:empty{display:none}
 .opened{display:none; margin-top:8px; padding:14px; border-radius:16px; background:#FFF1C9; border:2px solid #F3CF6B}
 .opened.show{display:block; animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
 .opened b{display:block; font-size:1.15rem}
@@ -371,6 +401,9 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
   .stamp{opacity:.9}
   .steam path{opacity:.7}
 }
+@media (max-height:620px){
+  #ask .mascot{width:88px}
+}
 @media (min-width:520px){
   .card{padding:34px 32px 30px}
 }
@@ -388,7 +421,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <span class="tag">🔒 Identity check</span>
       <div class="mascot-slot" data-mood="happy"></div>
       <h1 id="name-h" tabindex="-1">Before we begin…</h1>
-      <p class="muted">This website contains highly classified information. (It's mostly about chai.)</p>
+      <p class="muted">This website contains highly classified information. (It's mostly about chai and choco lava cake.)</p>
       <p class="question">Is your name <span data-her></span>?</p>
       <div class="btn-row">
         <button class="btn btn-yes" data-go="verify">Yes, I'm <span data-her></span></button>
@@ -471,8 +504,9 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <div class="scan" aria-hidden="true"><i id="scan-bar"></i></div>
       <ul class="checks" id="checks" aria-live="polite">
         <li>✓ Name matches records</li>
-        <li>✓ Vibe check passed</li>
-        <li>✓ Chai tolerance: excellent</li>
+        <li>✓ Contract record: 0 breaches (undefeated) 🏆</li>
+        <li>✓ Choco lava cake affinity: dangerously high</li>
+        <li>⚠ Lactose tolerance: we don't talk about it</li>
         <li><b>✅ Identity confirmed: <span data-her></span></b></li>
       </ul>
       <div class="btn-row"><button class="btn btn-ink" id="verify-next" style="visibility:hidden">Open the notice 📜</button></div>
@@ -490,17 +524,23 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
         <div class="title">THE TOTALLY NON‑BINDING, COMPLETELY UNSIGNED NO‑CONTACT AGREEMENT</div>
         <ol>
           <li>No contact.</li>
-          <li>Whoever breaks Clause 1 donates <b>₹2,000</b> worth of clothes to an orphanage.</li>
+          <li>If <span data-me></span> breaks Clause 1: <b>₹2,000</b> of clothes to an orphanage.</li>
+          <li>If <span data-her></span> breaks Clause 1: <b>₹5,000</b>. Premium party, premium penalty.</li>
           <li>That's it. That's the whole agreement.</li>
         </ol>
         <div class="stamp">Breached by <span data-me></span></div>
       </div>
+      <div class="standings" aria-label="Current standings">
+        <div class="st-head">CURRENT STANDINGS</div>
+        <div class="st-row"><span class="st-name"><span data-me></span></span><span>1 breach 😬</span><span class="st-amt">owes ₹2,000</span></div>
+        <div class="st-row champ"><span class="st-name"><span data-her></span> 🏆</span><span>0 breaches</span><span class="st-amt">₹5,000 untouched</span></div>
+      </div>
       <div class="letter">
         <p>Dear <span data-her></span>,</p>
         <p>I am writing to formally confess: <b>I broke Clause 1.</b> You're currently looking at the evidence.</p>
-        <p>So I'm paying up. The full ₹2,000, sponsored entirely by me.</p>
-        <p>But I was thinking… a donation drive is a lot more fun with a co‑host.</p>
-        <p class="ps"><b>P.S.</b> Reading or replying to this does <b>not</b> count as you breaking no contact. Your ₹2,000 is safe. I checked with my lawyer. (I am the lawyer.)</p>
+        <p>You, meanwhile, held the line. <b>Undefeated.</b> And your clause was worth ₹5,000, two and a half times mine. Which is only fair: some people's silence is simply more valuable. 🏆</p>
+        <p>So I'm paying up. The full ₹2,000, sponsored entirely by me. But I was thinking… a donation drive is a lot more fun with a co‑host.</p>
+        <p class="ps"><b>P.S.</b> Reading or replying to this does <b>not</b> count as you breaking no contact. Your ₹5,000 is safe, and so is your perfect record. I checked with my lawyer. (I am the lawyer.)</p>
         <p class="signature"><span data-me></span><small>the guilty party</small></p>
       </div>
       <div class="btn-row"><button class="btn btn-ink block" data-go="plan">Continue reading →</button></div>
@@ -514,16 +554,19 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <h1 id="plan-h" tabindex="-1">A date, with paperwork.</h1>
       <p class="muted">Agenda for the first (and only) Breach Settlement Ceremony:</p>
       <ol class="plan">
-        <li><div class="ico" aria-hidden="true">☕</div><div><b>Chai</b><span>The opening session. Non‑negotiable.</span></div></li>
-        <li><div class="ico" aria-hidden="true">✂️</div><div><b>Online ribbon‑cutting</b><span>A grand (virtual) inauguration of the drive.</span></div></li>
+        <li><div class="ico" aria-hidden="true">☕</div><div><b>Chai</b><span>The opening session. Non‑negotiable. Milk: very negotiable. (Oat milk has been briefed.)</span></div></li>
+        <li><div class="ico" aria-hidden="true">✂️</div><div><b>Online ribbon‑cutting</b><span>Right after chai. A grand (virtual) inauguration of the drive.</span></div></li>
         <li><div class="ico" aria-hidden="true">🛍️</div><div><b>Buying clothes</b><span>₹2,000 budget. You get final say on every piece.</span></div></li>
         <li><div class="ico" aria-hidden="true">🧸</div><div><b>Donating to the orphanage</b><span>The whole point. The kids get the good stuff.</span></div></li>
         <li><div class="ico" aria-hidden="true">🎉</div><div><b>A fun activity of your choice</b><span>Anything you like. I'll pretend I'm good at it.</span></div></li>
+        <li class="bonus"><div class="ico" aria-hidden="true">🍫</div><div><b>Bonus round: choco lava cake</b><span>Contains dairy. A one‑time exemption has been granted.</span></div></li>
       </ol>
       <div class="receipt" aria-label="Budget summary">
         <div><span>Clothes budget</span><span>₹2,000</span></div>
         <div><span>Sponsored by</span><span><span data-me></span> (100%)</span></div>
+        <div><span>Dairy budget</span><span>₹0*</span></div>
         <div class="total"><span>Your cost</span><span>₹0 + one day</span></div>
+        <div class="fine"><span>*Except choco lava cake. It has diplomatic immunity.</span></div>
       </div>
       <div class="btn-row"><button class="btn btn-ink block" data-go="ask">Okay… and?</button></div>
     </div>
@@ -535,7 +578,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <div class="ask-meta" id="ask-meta"></div>
       <div class="mascot-slot" id="ask-mascot" data-mood="hopeful"></div>
       <h1 id="ask-q" tabindex="-1" aria-live="polite">So, <span data-her></span>… will you go on this (slightly charitable) date with me?</h1>
-      <p id="ask-sub" class="muted">One chai. One ribbon. One good deed. One fun thing of your choice.</p>
+      <p id="ask-sub" class="muted">One chai (lactose‑free). One good deed. One fun thing of your choice. One choco lava cake.</p>
       <div class="answers">
         <button class="btn btn-yes" id="yes-btn">Yes</button>
         <button class="btn btn-no" id="no-btn">No</button>
@@ -550,8 +593,8 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <div class="mascot-slot" data-mood="content"></div>
       <h1 id="declined-h" tabindex="-1">Okay, <span data-her></span>. 🌼</h1>
       <p>No hard feelings. Genuinely.</p>
-      <p>Go enjoy your day, and have a great one.</p>
-      <p class="muted small">And don't worry: the kids still get their clothes. A contract is a contract, even an unsigned one.</p>
+      <p>Go enjoy your day, and have a great one. Maybe treat yourself to a choco lava cake. (Skip the milkshake.)</p>
+      <p class="muted small">And don't worry: the kids still get their clothes. A contract is a contract, even an unsigned one. Your record stays perfect: 0 breaches, ₹5,000 untouched. 🏆</p>
       <button class="linkish" id="changed-mind">Wait… I changed my mind</button>
     </div>
   </section>
@@ -559,21 +602,51 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
   <!-- 6. YES! -->
   <section class="screen" id="yes" aria-labelledby="yes-h">
     <div class="card">
-      <div class="mascot-slot" data-mood="ecstatic" data-size="lg"></div>
+      <div class="duo">
+        <div class="mascot-slot" data-mood="ecstatic"></div>
+        <div class="mascot-slot" data-kind="lava" data-mood="ecstatic"></div>
+      </div>
       <h1 id="yes-h" class="yay" tabindex="-1" aria-label="You said yes!"></h1>
-      <p><b>Breach settled. Chai secured.</b><br>Orphanage, brace yourselves.</p>
-      <p class="muted small">This is now legally binding. (It isn't. But emotionally? Extremely.)</p>
+      <p><b>Breach settled. Chai secured (oat milk).</b><br>Choco lava cake: on high alert. Orphanage: brace yourselves.</p>
       <hr class="divider">
-      <h2>First, a rehearsal.</h2>
-      <p class="muted">For the online ribbon‑cutting. Tap the ribbon to declare the drive open ✂️</p>
-      <button class="ribbon" id="ribbon" aria-label="Cut the ribbon">
-        <span class="r-half l"></span><span class="r-half r"></span>
-        <span class="r-bow" aria-hidden="true">🎀</span>
-        <span class="r-scissors" aria-hidden="true">✂️</span>
-      </button>
+      <h2>One small formality.</h2>
+      <p class="muted">Our first contract was famously unsigned. This one won't be.</p>
+      <div class="agreement">
+        <div class="title">THE DATE AGREEMENT</div>
+        <ul class="terms">
+          <li>☕ One chai. Lactose‑free. Supervised.</li>
+          <li>✂️ One online ribbon‑cutting, right after chai.</li>
+          <li>🛍️ ₹2,000 of clothes, sponsored by <span data-me></span>. You choose.</li>
+          <li>🧸 One orphanage donation.</li>
+          <li>🎉 One fun activity of your choice.</li>
+          <li>🍫 One choco lava cake. (Contains dairy. Diplomatic immunity applies.)</li>
+        </ul>
+        <div class="sig-wrap">
+          <canvas id="sig" aria-label="Signature pad. Draw your signature with your finger."></canvas>
+          <span class="sig-x" aria-hidden="true">✕</span>
+          <span class="sig-label">Sign here, <span data-her></span></span>
+          <button type="button" class="linkish sig-clear" id="sig-clear">Clear</button>
+        </div>
+        <div class="seal-row">
+          <div class="seal-copy"><b>Official seal</b><span>One (1) choco lava cake, ceremonially dropped.</span></div>
+          <div class="seal-spot" id="seal-spot" aria-hidden="true">
+            <span class="seal-ph">🍫?</span>
+            <svg class="splat" viewBox="0 0 120 100">
+              <path d="M60 16 C78 14 96 24 100 38 C110 42 115 55 107 64 C105 77 92 85 78 83 C74 93 66 97 61 89 C51 93 39 89 35 81 C21 83 11 70 15 60 C7 49 13 35 28 33 C32 23 46 16 60 16 Z" fill="#3B1A0B"/>
+              <circle cx="12" cy="30" r="4.5" fill="#3B1A0B"/><circle cx="110" cy="28" r="3.5" fill="#3B1A0B"/>
+              <circle cx="104" cy="90" r="4" fill="#3B1A0B"/><circle cx="18" cy="88" r="3" fill="#3B1A0B"/>
+              <path d="M40 30 C48 25 58 24 67 26" stroke="#fff" stroke-opacity=".28" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            </svg>
+            <div class="seal-cake mascot-slot" data-kind="lava" data-mood="ecstatic" data-size="seal"></div>
+            <span class="seal-label">SEALED</span>
+          </div>
+        </div>
+      </div>
+      <p class="sig-hint muted small" id="sig-hint" aria-live="polite"></p>
+      <div class="btn-row" id="seal-row-btn"><button class="btn btn-yes block" id="seal-btn">Sign &amp; seal it 🍫</button></div>
       <div class="opened" id="opened" role="status">
-        <b>🎊 Declared officially OPEN 🎊</b>
-        The <span data-her></span> × <span data-me></span> Clothes Drive
+        <b>✍️ Signed. 🍫 Sealed. 🎉 Delivered.</b>
+        Sealed in molten chocolate, the most binding substance known to science.
       </div>
       <div class="btn-row"><button class="btn btn-ink block" id="to-form" data-go="form">Now, pick a date →</button></div>
     </div>
@@ -621,22 +694,32 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
         </fieldset>
 
         <fieldset>
-          <legend>Chai order <em>(optional, for research purposes)</em></legend>
+          <legend>Chai order <em>(optional; milk‑related choices are subject to review)</em></legend>
           <div class="chips">
-            <label class="chip"><input type="radio" name="chai" value="Masala"><span>Masala</span></label>
-            <label class="chip"><input type="radio" name="chai" value="Adrak"><span>Adrak</span></label>
-            <label class="chip"><input type="radio" name="chai" value="Elaichi"><span>Elaichi</span></label>
-            <label class="chip"><input type="radio" name="chai" value="Cutting"><span>Cutting</span></label>
-            <label class="chip"><input type="radio" name="chai" value="Surprise me"><span>Surprise me</span></label>
+            <label class="chip"><input type="radio" name="chai" value="Oat milk masala"><span>🌾 Oat milk masala</span></label>
+            <label class="chip"><input type="radio" name="chai" value="Lemon tea"><span>🍋 Lemon tea (very responsible)</span></label>
+            <label class="chip"><input type="radio" name="chai" value="Black adrak chai"><span>🫖 Black adrak (no cows involved)</span></label>
+            <label class="chip"><input type="radio" name="chai" value="Regular milk chai"><span>🥛 Regular milk (needs approval)</span></label>
+            <label class="chip"><input type="radio" name="chai" value="Surprise me (lactose-free)"><span>✨ Surprise me (lactose‑free)</span></label>
+          </div>
+          <p class="note" id="milk-note" aria-live="polite"></p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Dessert <em>(we've narrowed it down for you)</em></legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="dessert" value="Choco lava cake" checked><span>🍫 Choco lava cake</span></label>
+            <label class="chip"><input type="radio" name="dessert" value="Choco lava cake, extra molten"><span>🌋 Choco lava cake, extra molten</span></label>
+            <label class="chip"><input type="radio" name="dessert" value="Two choco lava cakes"><span>🍫🍫 Two choco lava cakes</span></label>
           </div>
         </fieldset>
 
         <label class="field">
           <span>Notes for the sponsor <em class="muted" style="font-style:normal;font-weight:400;font-size:.86rem">(optional)</em></span>
-          <textarea id="f-notes" maxlength="300" placeholder="Demands, conditions, preferred chai spot…"></textarea>
+          <textarea id="f-notes" maxlength="300" placeholder="Demands, conditions, preferred chai spot, lava cake intel…"></textarea>
         </label>
 
-        <button class="btn btn-yes block" type="submit" style="margin-top:22px">Confirm booking 🎀</button>
+        <button class="btn btn-yes block" type="submit" style="margin-top:22px">Confirm booking 🍫</button>
       </form>
     </div>
   </section>
@@ -648,7 +731,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <div class="t-top">
         <div class="eyebrow">ADMIT TWO · NON‑REFUNDABLE</div>
         <h2 id="ticket-h" tabindex="-1">Breach Settlement Ceremony</h2>
-        <div class="muted small">Chai · Ribbon · Shopping · Donation · Fun</div>
+        <div class="muted small">Chai · Ribbon · Shopping · Donation · Fun · 🍫</div>
       </div>
       <div class="t-perf" aria-hidden="true"></div>
       <div class="t-body">
@@ -658,9 +741,11 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
           <div><dt>Time</dt><dd id="t-time"></dd></div>
           <div><dt>Fun activity</dt><dd id="t-activity"></dd></div>
           <div><dt>Chai</dt><dd id="t-chai"></dd></div>
+          <div><dt>Dessert</dt><dd id="t-dessert"></dd></div>
           <div id="t-notes-row"><dt>Notes</dt><dd id="t-notes"></dd></div>
           <div><dt>Sponsor</dt><dd><span data-me></span> (₹2,000)</dd></div>
           <div><dt>Beneficiary</dt><dd>The orphanage kids 🧸</dd></div>
+          <div><dt>Your record</dt><dd>0 breaches · ₹5,000 untouched 🏆</dd></div>
         </dl>
         <p class="t-count" id="t-count"></p>
         <div class="btn-row stack">
@@ -683,7 +768,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <div class="win-icon" aria-hidden="true">☕</div>
       <div>
         <p class="win-title" id="err-title">Error 418: I'm a teapot</p>
-        <p id="err-desc" class="small">Your answer “No” could not be brewed. Did you mean: <b>“Yes”</b>?</p>
+        <p id="err-desc" class="small">Your answer “No” could not be brewed. (We're out of milk. On purpose.) Did you mean: <b>“Yes”</b>?</p>
       </div>
     </div>
     <div class="win-actions">
@@ -756,12 +841,45 @@ const CONFIG = {
     stream: `<path class="tear-stream" d="M76 136 L74 186" stroke="#7EC8E3" stroke-width="7" stroke-linecap="round" stroke-dasharray="7 9" fill="none"/>
              <path class="tear-stream" d="M124 136 L126 186" stroke="#7EC8E3" stroke-width="7" stroke-linecap="round" stroke-dasharray="7 9" fill="none"/>`,
   };
-  const HAND = (x, y) => `<circle cx="${x}" cy="${y}" r="7" fill="#C8643B" stroke="#8B3E22" stroke-width="3"/>`;
-  const ARMS = {
-    down: `<g>${'<path d="M46 122 Q28 132 25 150" fill="none" stroke="#8B3E22" stroke-width="7" stroke-linecap="round"/>' + HAND(25, 152)}
-           ${'<path d="M154 122 Q172 132 175 150" fill="none" stroke="#8B3E22" stroke-width="7" stroke-linecap="round"/>' + HAND(175, 152)}</g>`,
-    up: `<g class="arms-up">${'<path d="M46 112 Q24 98 22 72" fill="none" stroke="#8B3E22" stroke-width="7" stroke-linecap="round"/>' + HAND(22, 70)}
-         ${'<path d="M154 112 Q176 98 178 72" fill="none" stroke="#8B3E22" stroke-width="7" stroke-linecap="round"/>' + HAND(178, 70)}</g>`,
+  // Arms take the body's colours: [stroke, hand fill]
+  const ARMS = (pose, [arm, hand]) => {
+    const limb = (d, x, y) => `<path d="${d}" fill="none" stroke="${arm}" stroke-width="7" stroke-linecap="round"/><circle cx="${x}" cy="${y}" r="7" fill="${hand}" stroke="${arm}" stroke-width="3"/>`;
+    return pose === "up"
+      ? `<g class="arms-up">${limb("M46 112 Q24 98 22 72", 22, 70)}${limb("M154 112 Q176 98 178 72", 178, 70)}</g>`
+      : `<g>${limb("M46 122 Q28 132 25 150", 25, 152)}${limb("M154 122 Q172 132 175 150", 175, 152)}</g>`;
+  };
+  const BODIES = {
+    chai: {
+      label: "A little cup of chai",
+      colors: ["#8B3E22", "#C8643B"],
+      shadow: `<ellipse cx="100" cy="196" rx="52" ry="5.5" fill="rgba(59,36,24,.10)"/>`,
+      body: `<path d="M38 66 L162 66 L148 182 Q100 197 52 182 Z" fill="#C8643B"/>
+        <path d="M42 100 L158 100 L156.4 112 L43.6 112 Z" fill="#B0532E"/>
+        <circle cx="62" cy="106" r="2.2" fill="#F3C9A6"/><circle cx="82" cy="106" r="2.2" fill="#F3C9A6"/><circle cx="100" cy="106" r="2.2" fill="#F3C9A6"/><circle cx="118" cy="106" r="2.2" fill="#F3C9A6"/><circle cx="138" cy="106" r="2.2" fill="#F3C9A6"/>
+        <path d="M52 78 L59 78 L66 166 L60 168 Z" fill="#fff" opacity=".16"/>
+        <ellipse cx="100" cy="66" rx="62" ry="13" fill="#A44A28"/>
+        <ellipse cx="100" cy="66" rx="54" ry="9" fill="#D9A066"/>
+        <ellipse cx="86" cy="64" rx="15" ry="3" fill="#EFC48F"/>`,
+      face: "",
+      steam: "",
+    },
+    lava: {
+      label: "A little choco lava cake",
+      colors: ["#5E3019", "#A8673F"],
+      shadow: `<ellipse cx="100" cy="188" rx="86" ry="13" fill="#fff" stroke="#E6D5C3" stroke-width="3"/>
+        <ellipse cx="140" cy="186" rx="24" ry="5.5" fill="#3B1A0B"/>`,
+      body: `<path d="M42 96 L158 96 L152 172 Q100 186 48 172 Z" fill="#A8673F"/>
+        <path d="M51 108 L58 108 L63 166 L57 168 Z" fill="#fff" opacity=".14"/>
+        <ellipse cx="100" cy="96" rx="58" ry="14" fill="#7A4226"/>
+        <ellipse cx="100" cy="94" rx="40" ry="8" fill="#68381F"/>
+        <circle cx="66" cy="92" r="1.8" fill="#fff" opacity=".85"/><circle cx="76" cy="100" r="1.6" fill="#fff" opacity=".85"/><circle cx="112" cy="101" r="1.8" fill="#fff" opacity=".85"/><circle cx="132" cy="92" r="1.6" fill="#fff" opacity=".85"/><circle cx="58" cy="99" r="1.4" fill="#fff" opacity=".85"/>
+        <path d="M128 95 Q146 91 157 99 L156 120 Q155 130 151 124 L150 148 Q147 158 143 148 L142 116 Q139 123 134 116 Z" fill="#3B1A0B"/>
+        <path d="M151 104 L151 118" stroke="#fff" stroke-opacity=".35" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="92" cy="86" r="8" fill="#E0314B"/><circle cx="89.5" cy="83" r="2.2" fill="#fff" opacity=".5"/>
+        <path d="M97 83 Q109 69 119 77 Q109 87 97 83Z" fill="#3FA796"/>`,
+      face: `transform="translate(-6 4)"`,
+      steam: `transform="translate(0 30)"`,
+    },
   };
   const STAR = (x, y, s = 1, delay = 0) => `<g transform="translate(${x} ${y}) scale(${s})"><path class="twinkle" style="animation-delay:${delay}s" d="M0 -9 Q1.6 -1.6 9 0 Q1.6 1.6 0 9 Q-1.6 1.6 -9 0 Q-1.6 -1.6 0 -9Z" fill="#F5A623"/></g>`;
   const MOODS = {
@@ -775,32 +893,29 @@ const CONFIG = {
     ecstatic:   { eyes: "closedHappy", mouth: "open", arms: "up", stars: true, cls: "party" },
     suspicious: { eyes: "squint", brows: "raised", mouth: "flat" },
   };
-  function mascot(mood = "happy", size = "") {
+  function mascot(mood = "happy", size = "", kind = "chai") {
     const m = MOODS[mood] || MOODS.happy;
-    return `<svg class="mascot ${size} ${m.cls || ""}" viewBox="0 0 200 204" role="img" aria-label="A little cup of chai looking ${mood}">
-      <g class="steam" stroke="#D8C2AE" stroke-width="5" stroke-linecap="round" fill="none">
+    const b = BODIES[kind] || BODIES.chai;
+    return `<svg class="mascot ${size} ${m.cls || ""}" viewBox="0 0 200 204" role="img" aria-label="${b.label} looking ${mood}">
+      <g class="steam" ${b.steam} stroke="#D8C2AE" stroke-width="5" stroke-linecap="round" fill="none">
         <path d="M82 50 C72 40 92 32 82 18"/><path d="M100 48 C90 36 110 28 100 12"/><path d="M118 50 C108 40 128 32 118 18"/>
       </g>
       ${m.stars ? STAR(30, 40, 1.1) + STAR(172, 34, .9, .35) + STAR(182, 168, .8, .7) : ""}
-      <ellipse cx="100" cy="196" rx="52" ry="5.5" fill="rgba(59,36,24,.10)"/>
-      ${ARMS[m.arms || "down"]}
-      <path d="M38 66 L162 66 L148 182 Q100 197 52 182 Z" fill="#C8643B"/>
-      <path d="M42 100 L158 100 L156.4 112 L43.6 112 Z" fill="#B0532E"/>
-      <circle cx="62" cy="106" r="2.2" fill="#F3C9A6"/><circle cx="82" cy="106" r="2.2" fill="#F3C9A6"/><circle cx="100" cy="106" r="2.2" fill="#F3C9A6"/><circle cx="118" cy="106" r="2.2" fill="#F3C9A6"/><circle cx="138" cy="106" r="2.2" fill="#F3C9A6"/>
-      <path d="M52 78 L59 78 L66 166 L60 168 Z" fill="#fff" opacity=".16"/>
-      <ellipse cx="100" cy="66" rx="62" ry="13" fill="#A44A28"/>
-      <ellipse cx="100" cy="66" rx="54" ry="9" fill="#D9A066"/>
-      <ellipse cx="86" cy="64" rx="15" ry="3" fill="#EFC48F"/>
-      <ellipse cx="64" cy="146" rx="9.5" ry="5.5" fill="#FF8FAB" opacity=".75"/>
-      <ellipse cx="136" cy="146" rx="9.5" ry="5.5" fill="#FF8FAB" opacity=".75"/>
-      ${m.brows ? BROWS[m.brows] : ""}
-      ${EYES[m.eyes]}
-      ${MOUTHS[m.mouth]}
-      ${m.tears ? TEARS[m.tears] : ""}
+      ${b.shadow}
+      ${ARMS(m.arms, b.colors)}
+      ${b.body}
+      <g ${b.face}>
+        <ellipse cx="64" cy="146" rx="9.5" ry="5.5" fill="#FF8FAB" opacity=".75"/>
+        <ellipse cx="136" cy="146" rx="9.5" ry="5.5" fill="#FF8FAB" opacity=".75"/>
+        ${m.brows ? BROWS[m.brows] : ""}
+        ${EYES[m.eyes]}
+        ${MOUTHS[m.mouth]}
+        ${m.tears ? TEARS[m.tears] : ""}
+      </g>
     </svg>`;
   }
   function paintMascots(root = document) {
-    $$(".mascot-slot", root).forEach((slot) => { slot.innerHTML = mascot(slot.dataset.mood, slot.dataset.size || ""); });
+    $$(".mascot-slot", root).forEach((slot) => { slot.innerHTML = mascot(slot.dataset.mood, slot.dataset.size || "", slot.dataset.kind || "chai"); });
   }
   paintMascots();
 
@@ -864,18 +979,18 @@ const CONFIG = {
   /* ---------------- The ask ---------------- */
   const STAGES = [
     { q: `So, ${HER}… will you go on this (slightly charitable) date with me?`,
-      sub: "One chai. One ribbon. One good deed. One fun thing of your choice.",
+      sub: "One chai (lactose‑free). One good deed. One fun thing of your choice. One choco lava cake.",
       yes: "Yes", no: "No", mood: "hopeful" },
-    { q: "Are you sure? There's chai involved. Good chai.",
+    { q: "Are you sure? There's chai involved. Good chai. Lactose‑free chai. I've done research.",
       sub: "The Yes button has been upgraded for your convenience.",
       yes: "Yes!", no: "No", mood: "worried" },
     { q: "Think of the children. (Literally. That's the whole plan.)",
       sub: "Also, the No button seems a little shy today.",
       yes: "YES 🥹", no: "No", mood: "sad", mode: "dodge" },
-    { q: "The ribbon has already been bought. It will remain… uncut.",
-      sub: "✂️ A tragedy in one act.",
-      yes: "Fine, YES ✂️", no: "No", mood: "sadder", mode: "error" },
-    { q: "Final offer: I carry every shopping bag AND you pick the chai spot.",
+    { q: "A choco lava cake has been reserved in your name. It will go… uneaten.",
+      sub: "🍫 A tragedy in one act.",
+      yes: "Fine, YES 🍫", no: "No", mood: "sadder", mode: "error" },
+    { q: "Final offer: I carry all the bags, you pick the chai spot, AND I look away for one (1) milk chai.",
       sub: "Saying no now requires real commitment.",
       yes: "OKAY YES ☕", no: "Hold to say no", mood: "crying", mode: "hold" },
   ];
@@ -1005,8 +1120,7 @@ const CONFIG = {
 
   function celebrate() {
     document.body.classList.add("party");
-    const rib = $("#ribbon"); rib.classList.remove("snipping", "cut");
-    $("#opened").classList.remove("show"); $("#to-form").classList.remove("show");
+    sealReset();
     vibrate([90, 50, 90, 50, 220]);
     tones([523.25, 659.25, 783.99, 1046.5], { step: .11, last: .7 });
     later(() => Confetti.cannons(), 80);
@@ -1018,25 +1132,107 @@ const CONFIG = {
       }), 700 + i * 420);
     }
     later(() => Confetti.cannons(), 3300);
-    emojiRain(["☕", "🎀", "✂️", "🛍️", "👕", "🧸", "💛", "🎉", "✨", "👗", "🧦"], 42);
+    emojiRain(["☕", "🍫", "🌋", "🛍️", "👕", "🧸", "💛", "🎉", "✨", "👗", "🌾"], 42);
+    requestAnimationFrame(sigSize);
   }
 
-  $("#ribbon").addEventListener("click", () => {
-    const rib = $("#ribbon");
-    if (rib.classList.contains("snipping")) return;
-    rib.classList.add("snipping");
-    tones([2400, 1800], { step: .07, type: "square", vol: .05, last: .08 });
+  /* ---------------- Sign & seal (the Date Agreement) ---------------- */
+  const sig = $("#sig"), sctx = sig.getContext("2d"), spot = $("#seal-spot"), sigHint = $("#sig-hint");
+  const INK_BLUE = "#1F3A93";
+  let strokes = [], drawing = null, inkLen = 0, typedSig = false, sealed = false;
+
+  function sigSize() {
+    const r = sig.getBoundingClientRect();
+    if (!r.width) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    sig.width = Math.round(r.width * dpr); sig.height = Math.round(r.height * dpr);
+    sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    sigRedraw();
+  }
+  function sigRedraw() {
+    const w = sig.clientWidth, h = sig.clientHeight;
+    sctx.clearRect(0, 0, w, h);
+    sctx.lineCap = "round"; sctx.lineJoin = "round"; sctx.strokeStyle = INK_BLUE; sctx.fillStyle = INK_BLUE; sctx.lineWidth = 2.8;
+    for (const pts of strokes) {
+      if (pts.length === 1) { sctx.beginPath(); sctx.arc(pts[0].x, pts[0].y, 1.6, 0, Math.PI * 2); sctx.fill(); continue; }
+      sctx.beginPath(); sctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length - 1; i++) {
+        sctx.quadraticCurveTo(pts[i].x, pts[i].y, (pts[i].x + pts[i + 1].x) / 2, (pts[i].y + pts[i + 1].y) / 2);
+      }
+      const last = pts[pts.length - 1]; sctx.lineTo(last.x, last.y); sctx.stroke();
+    }
+    if (typedSig) {
+      sctx.font = "700 40px Caveat, 'Segoe Print', cursive";
+      sctx.fillText(HER, 40, h - 40);
+    }
+  }
+  const sigPoint = (e) => { const r = sig.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+  sig.addEventListener("pointerdown", (e) => {
+    if (sealed) return;
+    e.preventDefault();
+    try { sig.setPointerCapture(e.pointerId); } catch (_) {}
+    if (typedSig) { typedSig = false; strokes = []; }
+    drawing = [sigPoint(e)]; strokes.push(drawing); sigRedraw();
+  });
+  sig.addEventListener("pointermove", (e) => {
+    if (!drawing) return;
+    const p = sigPoint(e), q = drawing[drawing.length - 1];
+    inkLen += Math.hypot(p.x - q.x, p.y - q.y);
+    drawing.push(p); sigRedraw();
+  });
+  const sigEnd = () => {
+    if (!drawing) return;
+    drawing = null;
+    if (inkLen > 40) sigHint.textContent = "Gorgeous signature. Extremely legally convincing.";
+  };
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach((ev) => sig.addEventListener(ev, sigEnd));
+  addEventListener("resize", () => { if (current === "yes") sigSize(); });
+
+  $("#sig-clear").addEventListener("click", () => {
+    if (sealed) return;
+    strokes = []; inkLen = 0; typedSig = false; sigHint.textContent = ""; sigRedraw();
+  });
+
+  function sealReset() {
+    strokes = []; drawing = null; inkLen = 0; typedSig = false; sealed = false;
+    sig.classList.remove("locked"); spot.classList.remove("sealed");
+    $("#sig-clear").hidden = false; $("#seal-row-btn").hidden = false;
+    sigHint.textContent = "";
+    $("#opened").classList.remove("show"); $("#to-form").classList.remove("show");
+    sigRedraw();
+  }
+
+  $("#seal-btn").addEventListener("click", async () => {
+    if (sealed) return;
+    sealed = true;
+    if (inkLen <= 40) {
+      // Nothing (or barely anything) drawn: sign it for her, in our finest handwriting
+      strokes = []; typedSig = true;
+      try { await document.fonts.load("700 40px Caveat"); } catch (_) {}
+      sigHint.textContent = "No signature detected, so we signed it in your finest handwriting. ✍️";
+    } else {
+      sigHint.textContent = "Incoming…";
+    }
+    sigRedraw();
+    sig.classList.add("locked");
+    $("#sig-clear").hidden = true; $("#seal-row-btn").hidden = true;
+    spot.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "center" });
+    tones([1400, 1100, 800, 560], { step: .08, type: "sine", vol: .06, last: .12 }); // whoosh
+    later(() => spot.classList.add("sealed"), 250);
+    later(() => { // splat!
+      const r = spot.getBoundingClientRect();
+      Confetti.burst({ x: r.left + r.width / 2, y: r.top + r.height / 2, count: 170, power: 12 });
+      tones([110, 82], { step: .06, type: "triangle", vol: .16, last: .18 });
+      vibrate([30, 20, 120]);
+    }, 250 + 500);
     later(() => {
-      rib.classList.add("cut");
-      const r = rib.getBoundingClientRect();
-      Confetti.burst({ x: r.left + r.width / 2, y: r.top + r.height / 2, count: 180, power: 13 });
-      later(() => Confetti.cannons(), 250);
       tones([392, 523.25, 659.25, 783.99, 1046.5], { step: .09, last: .8 });
-      vibrate([60, 30, 120]);
-      emojiRain(["🎀", "✂️", "🎊", "✨"], 26);
+      Confetti.cannons();
+      emojiRain(["🍫", "🌋", "✍️", "✨", "🎉"], 26);
+      if (!typedSig) sigHint.textContent = "Signed by hand. Sealed by cake.";
       $("#opened").classList.add("show");
       $("#to-form").classList.add("show");
-    }, 520);
+    }, 250 + 1050);
   });
 
   /* ---------------- Sound (tiny, quiet, synthesized) ---------------- */
@@ -1149,6 +1345,11 @@ const CONFIG = {
       $("#e-activity").textContent = "";
     }
     if (e.target.id === "f-date") $("#e-date").textContent = "";
+    if (e.target.name === "chai") {
+      $("#milk-note").textContent = e.target.value === "Regular milk chai"
+        ? "Request forwarded to the Department of Dairy Regulation (it's me). Status: pending. 👀"
+        : "";
+    }
   });
   $("#f-other").addEventListener("input", () => { $("#e-activity").textContent = ""; });
 
@@ -1170,11 +1371,14 @@ const CONFIG = {
       vibrate([20, 30, 20]);
       return;
     }
+    const chai = (form.querySelector('input[name="chai"]:checked') || {}).value;
     booking = {
       date,
       time: (form.querySelector('input[name="time"]:checked') || {}).value || "Whenever works",
       activity: act === "__other" ? other : act,
-      chai: (form.querySelector('input[name="chai"]:checked') || {}).value || "No preference",
+      chai: !chai ? "Sponsor's choice (lactose-free, obviously)"
+        : chai === "Regular milk chai" ? "Regular milk chai (pending approval 👀)" : chai,
+      dessert: (form.querySelector('input[name="dessert"]:checked') || {}).value || "Choco lava cake",
       notes: $("#f-notes").value.trim(),
     };
     renderTicket();
@@ -1189,16 +1393,17 @@ const CONFIG = {
     return [
       "📜 RE: The No-Contact Agreement",
       "",
-      "Breach acknowledged. Forfeit accepted. I'm in! 🎀",
+      "Breach acknowledged. Forfeit accepted. Agreement signed & sealed. I'm in! 🍫",
       "",
       `📅 Date: ${prettyDate(b.date)}`,
       `🕐 Time: ${b.time}`,
       `🎉 Fun activity: ${b.activity}`,
       `☕ Chai order: ${b.chai}`,
+      `🍫 Dessert: ${b.dessert}`,
       ...(b.notes ? [`📝 Notes: ${b.notes}`] : []),
       "",
       `— ${HER}`,
-      "(This message does not count as me breaking no contact.)",
+      "(0 breaches. ₹5,000 untouched. This message doesn't count. 🏆)",
     ].join("\n");
   }
 
@@ -1208,19 +1413,19 @@ const CONFIG = {
     $("#t-time").textContent = b.time;
     $("#t-activity").textContent = b.activity;
     $("#t-chai").textContent = b.chai;
+    $("#t-dessert").textContent = b.dessert;
     $("#t-notes").textContent = b.notes;
     $("#t-notes-row").hidden = !b.notes;
     const n = daysUntil(b.date);
     $("#t-count").textContent =
-      n === 0 ? "That's TODAY. Put the kettle on. ☕" :
-      n === 1 ? "That's tomorrow! Chai is being mentally prepared. ☕" :
-      n > 60 ? `T‑minus ${n} days until chai. I'll be patient. (I won't be.)` :
-      `T‑minus ${n} days until chai. ☕`;
+      n === 0 ? "That's TODAY. Put the kettle on. (Hold the milk.) ☕" :
+      n === 1 ? "That's tomorrow! The lava cake is being mentally prepared. 🍫" :
+      n > 60 ? `T‑minus ${n} days until chai and choco lava cake. I'll be patient. (I won't be.)` :
+      `T‑minus ${n} days until chai and choco lava cake. ☕🍫`;
     const num = whatsAppDigits();
     $("#wa-link").href = `https://wa.me/${num}?text=${encodeURIComponent(bookingText())}`;
-    $("#wa-note").textContent = num
-      ? "Sending this does not count as you breaking no contact. (Clause 2b. I just wrote it.)"
-      : `WhatsApp will ask you to pick a chat: choose ${ME}. Sending this does not count as you breaking no contact. (Clause 2b. I just wrote it.)`;
+    const clause = "Sending this does not count as you breaking no contact. Your ₹5,000 and your perfect record stay exactly where they are. (Clause 2b. I just wrote it.)";
+    $("#wa-note").textContent = num ? clause : `WhatsApp will ask you to pick a chat: choose ${ME}. ${clause}`;
   }
 
   $("#copy-btn").addEventListener("click", async () => {
