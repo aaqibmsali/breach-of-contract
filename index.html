@@ -540,7 +540,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <h1 id="verify-h" tabindex="-1">Running checks…</h1>
       <div class="scan" aria-hidden="true"><i id="scan-bar"></i></div>
       <ul class="checks" id="checks" aria-live="polite">
-        <li>✓ Name matches records</li>
+        <li>✓ Name matches <span data-her-wf></span> records (founding member, sole beneficiary)</li>
         <li>✓ Contract record: 0 breaches (undefeated) 🏆</li>
         <li>✓ Choco lava cake affinity: dangerously high</li>
         <li>⚠ Lactose tolerance: we don't talk about it</li>
@@ -562,7 +562,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
         <ol>
           <li>No contact.</li>
           <li>If <span data-me></span> breaks Clause 1: <b>₹2,000</b> of clothes to an orphanage.</li>
-          <li>If <span data-her></span> breaks Clause 1: <b>₹5,000</b>. Premium party, premium penalty.</li>
+          <li>If <span data-her></span> breaks Clause 1: <b>₹5,000</b>. Premium party, premium penalty. (To an orphanage. Not the <span data-her></span> Welfare Fund. Nice try.)</li>
           <li>That's it. That's the whole agreement.</li>
         </ol>
         <div class="stamp">Breached by <span data-me></span></div>
@@ -596,14 +596,16 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
         <li><div class="ico" aria-hidden="true">🛍️</div><div><b>Buying clothes</b><span>₹2,000 budget. You get final say on every piece.</span></div></li>
         <li><div class="ico" aria-hidden="true">🧸</div><div><b>Donating to the orphanage</b><span>The whole point. The kids get the good stuff.</span></div></li>
         <li><div class="ico" aria-hidden="true">🎉</div><div><b>A fun activity of your choice</b><span>Anything you like. I'll pretend I'm good at it.</span></div></li>
-        <li class="bonus"><div class="ico" aria-hidden="true">🍫</div><div><b>Bonus round: choco lava cake</b><span>Contains dairy. A one‑time exemption has been granted.</span></div></li>
+        <li class="bonus"><div class="ico" aria-hidden="true">🍫</div><div><b>Bonus round: choco lava cake</b><span>Funded by an <span data-her-wf></span> grant. Contains dairy; a one‑time exemption has been granted.</span></div></li>
       </ol>
       <div class="receipt" aria-label="Budget summary">
         <div><span>Clothes budget</span><span>₹2,000</span></div>
         <div><span>Sponsored by</span><span><span data-me></span> (100%)</span></div>
         <div><span>Dairy budget</span><span>₹0*</span></div>
+        <div><span><span data-me-wf></span> funds used</span><span>₹0†</span></div>
         <div class="total"><span>Your cost</span><span>₹0 + one day</span></div>
         <div class="fine"><span>*Except choco lava cake. It has diplomatic immunity.</span></div>
+        <div class="fine"><span>†The <span data-me></span> Welfare Fund is strictly reserved for <span data-me></span>'s snacks. This one's out of pocket.</span></div>
       </div>
       <div class="btn-row"><button class="btn btn-ink block" data-go="ask">Okay… and?</button></div>
     </div>
@@ -630,7 +632,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <div class="mascot-slot" data-mood="content"></div>
       <h1 id="declined-h" tabindex="-1">Okay, <span data-her></span>. 🌼</h1>
       <p>No hard feelings. Genuinely.</p>
-      <p>Go enjoy your day, and have a great one. Maybe treat yourself to a choco lava cake. (Skip the milkshake.)</p>
+      <p>Go enjoy your day, and have a great one. Maybe treat yourself to a choco lava cake. (Skip the milkshake. Bill it to the <span data-her-wf></span>.)</p>
       <p class="muted small">And don't worry: the kids still get their clothes. A contract is a contract, even an unsigned one. Your record stays perfect: 0 breaches, ₹5,000 untouched. 🏆</p>
       <button class="linkish" id="changed-mind">Wait… I changed my mind</button>
     </div>
@@ -644,7 +646,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
         <div class="mascot-slot" data-kind="lava" data-mood="ecstatic"></div>
       </div>
       <h1 id="yes-h" class="yay" tabindex="-1" aria-label="You said yes!"></h1>
-      <p><b>Breach settled. Black tea secured.</b><br>Choco lava cake: on high alert. Orphanage: brace yourselves.</p>
+      <p><b>Breach settled. Black tea secured.</b><br>Choco lava cake: on high alert. <span data-her-wf></span> grant: approved. Orphanage: brace yourselves.</p>
       <hr class="divider">
       <h2>One small formality.</h2>
       <p class="muted">Our first contract was famously unsigned. This one won't be.</p>
@@ -656,7 +658,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
           <li>🛍️ ₹2,000 of clothes, sponsored by <span data-me></span>. You choose.</li>
           <li>🧸 One orphanage donation.</li>
           <li>🎉 One fun activity of your choice.</li>
-          <li>🍫 One choco lava cake. (Contains dairy. Diplomatic immunity applies.)</li>
+          <li>🍫 One choco lava cake, issued as an <span data-her-wf></span> grant. (Contains dairy. Diplomatic immunity applies.)</li>
         </ul>
         <div class="sig-wrap">
           <canvas id="sig" aria-label="Signature pad. Draw your signature with your finger."></canvas>
@@ -765,6 +767,18 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
           </div>
         </fieldset>
 
+        <fieldset>
+          <legend><span data-her-wf></span> snack grant <em>(optional; applications reviewed by the <span data-me-wf></span> board, which is me)</em></legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="grant" value="Momos"><span>🥟 Momos</span></label>
+            <label class="chip"><input type="radio" name="grant" value="Fries"><span>🍟 Fries</span></label>
+            <label class="chip"><input type="radio" name="grant" value="Tacos"><span>🌮 Tacos</span></label>
+            <label class="chip"><input type="radio" name="grant" value="Pizza"><span>🍕 Pizza (dairy alert 🚨)</span></label>
+            <label class="chip"><input type="radio" name="grant" value="Just a juice"><span>🧃 Just a juice, I'm humble</span></label>
+          </div>
+          <p class="note" id="grant-note" aria-live="polite"></p>
+        </fieldset>
+
         <label class="field">
           <span>Notes for the sponsor <em class="muted" style="font-style:normal;font-weight:400;font-size:.86rem">(optional)</em></span>
           <textarea id="f-notes" maxlength="300" placeholder="Demands, conditions, preferred chai spot, lava cake intel…"></textarea>
@@ -793,6 +807,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
           <div><dt>Fun activity</dt><dd id="t-activity"></dd></div>
           <div><dt>Chai</dt><dd id="t-chai"></dd></div>
           <div><dt>Dessert</dt><dd id="t-dessert"></dd></div>
+          <div><dt><span data-her-wf></span> grant</dt><dd id="t-grant"></dd></div>
           <div id="t-notes-row"><dt>Notes</dt><dd id="t-notes"></dd></div>
           <div><dt>Sponsor</dt><dd><span data-me></span> (₹2,000)</dd></div>
           <div><dt>Beneficiary</dt><dd>The orphanage kids 🧸</dd></div>
@@ -852,8 +867,12 @@ const CONFIG = {
   const unset = (v) => !v || v.startsWith("__");
   const HER = unset(CONFIG.herName) ? "Her Name" : CONFIG.herName;
   const ME = unset(CONFIG.myName) ? "Your Name" : CONFIG.myName;
+  // The made-up welfare funds, named after each of you: "<name> Welfare Fund (<initial>WF)"
+  const HER_WF = HER.trim().charAt(0).toUpperCase() + "WF", ME_WF = ME.trim().charAt(0).toUpperCase() + "WF";
   $$("[data-her]").forEach((el) => { el.textContent = HER; });
   $$("[data-me]").forEach((el) => { el.textContent = ME; });
+  $$("[data-her-wf]").forEach((el) => { el.textContent = HER_WF; });
+  $$("[data-me-wf]").forEach((el) => { el.textContent = ME_WF; });
   $("#who").placeholder = `e.g. Definitely Not ${HER}`;
   document.title = `Official Notice · For ${HER}`;
   const whatsAppDigits = () => (unset(CONFIG.whatsAppNumber) ? "" : String(CONFIG.whatsAppNumber).replace(/\D/g, ""));
@@ -1033,7 +1052,7 @@ const CONFIG = {
       sub: "One black tea (milk not invited). One good deed. One fun thing of your choice. One choco lava cake.",
       yes: "Yes", no: "No", mood: "hopeful" },
     { q: "Are you sure? There's chai involved. Good chai. Black tea, zero milk. I've done research.",
-      sub: "The Yes button has been upgraded for your convenience.",
+      sub: `The Yes button has been upgraded for your convenience. (Paid for by the ${ME_WF}.)`,
       yes: "Yes!", no: "No", mood: "worried" },
     { q: "Think of the children. (Literally. That's the whole plan.)",
       sub: "Also, the No button seems a little shy today.",
@@ -1499,6 +1518,11 @@ const CONFIG = {
       $("#e-activity").textContent = "";
     }
     if (e.target.name === "time") autoTime = false;
+    if (e.target.name === "grant") {
+      $("#grant-note").textContent = e.target.value === "Pizza"
+        ? `Grant approved by the ${ME_WF} board. The Department of Dairy Regulation has been cc'd. 🚨🧀`
+        : `Grant approved by the ${ME_WF} board. Funds will be disbursed on the day. 💸`;
+    }
     if (e.target.name === "chai") {
       $("#milk-note").textContent = e.target.value === "Regular milk chai"
         ? "Request forwarded to the Department of Dairy Regulation (it's me). Status: pending. 👀"
@@ -1537,6 +1561,7 @@ const CONFIG = {
       chai: !chai ? "Sponsor's choice (black, obviously)"
         : chai === "Regular milk chai" ? "Regular milk chai (pending approval 👀)" : chai,
       dessert: (form.querySelector('input[name="dessert"]:checked') || {}).value || "Choco lava cake",
+      grant: (form.querySelector('input[name="grant"]:checked') || {}).value || "",
       notes: $("#f-notes").value.trim(),
     };
     renderTicket();
@@ -1558,6 +1583,7 @@ const CONFIG = {
       `🎉 Fun activity: ${b.activity}`,
       `☕ Chai order: ${b.chai}`,
       `🍫 Dessert: ${b.dessert}`,
+      `🏦 ${HER} Welfare Fund (${HER_WF}) snack grant: ${b.grant ? `${b.grant} (approved by the ${ME_WF})` : "not claimed (the board is shocked)"}`,
       ...(b.notes ? [`📝 Notes: ${b.notes}`] : []),
       "",
       `— ${HER}`,
@@ -1572,6 +1598,7 @@ const CONFIG = {
     $("#t-activity").textContent = b.activity;
     $("#t-chai").textContent = b.chai;
     $("#t-dessert").textContent = b.dessert;
+    $("#t-grant").textContent = b.grant ? `${b.grant} (approved ✅)` : "Not claimed (the board is shocked)";
     $("#t-notes").textContent = b.notes;
     $("#t-notes-row").hidden = !b.notes;
     const n = daysUntil(b.date);

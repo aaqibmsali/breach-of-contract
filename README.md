@@ -33,7 +33,12 @@ from repository **secrets** and publishes the result to GitHub Pages.
      can't be picked. Picking a weekday locks the time to Night. Anything later is an icy 🥶 "too late" day:
      tapping it shows a rotating, wildly dramatic denial ("the kids will have no clothes, and they will not survive").
    - Then the fun activity, a black‑tea chai order (with a "Department of Dairy Regulation" for regular milk),
-     dessert (every option is choco lava cake) and notes.
+     dessert (every option is choco lava cake), a snack grant from her made‑up welfare fund, and notes.
+
+   **The welfare funds:** an inside joke about two made‑up organisations, one named after each of you
+   ("*Name* Welfare Fund", acronym = first initial + "WF"). They show up in the contract, the receipt, the
+   lava‑cake grant, the snack‑grant picker, the ticket and the WhatsApp message. Their names and acronyms
+   are built from `HER_NAME` / `MY_NAME` at runtime, so they're never written into the repo.
    - Submitting shows a **ticket** with a countdown and a **Send on WhatsApp** button with the message already filled in.
 
    To change availability, edit `TAKEN`, `WEEKDAY_TIMES`, `BOOK_BY` and the `DENIALS` lines in the
