@@ -698,7 +698,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <form id="date-form" novalidate>
         <div class="field">
           <span id="date-label">Date</span>
-          <p class="avail">Weekends: wide open, all day ✨ · Weekdays: I'm free at night only, like a superhero 🦇 · Book by <b id="avail-last"></b>: after that, the kids can't wait. 🥶</p>
+          <p class="avail">Weekends: wide open, all day ✨ · Weekdays: I'm free at night only, like a superhero 🦇 · <span id="avail-cut"></span></p>
           <div class="cal" role="group" aria-labelledby="date-label">
             <div class="cal-head">
               <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">‹</button>
@@ -1388,19 +1388,15 @@ const CONFIG = {
   const prettyDate = (s) => new Intl.DateTimeFormat("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(parseLocal(s));
 
   /* ---------------- Availability calendar ---------------- */
-  // Edit freely: dates that are taken, which times work on weekdays, how many weekends to offer.
+  // Edit freely: dates that are taken, which times work on weekdays, and the booking deadline.
   const TAKEN = { "2026-11-08": "I have book club that day. 📚 Being well‑read takes commitment." };
   const WEEKDAY_TIMES = ["Night"];
-  const WEEKENDS_AHEAD = 2; // this weekend + the next one; anything later is "too late"
+  const BOOK_BY = "2026-11-15"; // hard deadline (Sun of next weekend); anything later is "too late"
 
   const toStr = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
-  const addDays = (s, n) => { const d = parseLocal(s); d.setDate(d.getDate() + n); return toStr(d); };
   const shortDate = (s) => new Intl.DateTimeFormat("en-IN", { weekday: "short", day: "numeric", month: "short" }).format(parseLocal(s));
-  // Rolling window: the Sunday that ends the last offered weekend (counted from today, Mon-first weeks)
-  function lastBookable() {
-    const t = todayStr(), dow = (parseLocal(t).getDay() + 6) % 7; // Mon=0 … Sun=6
-    return addDays(t, 6 - dow + 7 * (WEEKENDS_AHEAD - 1));
-  }
+  const lastBookable = () => BOOK_BY;
+  const bookingClosed = () => todayStr() > BOOK_BY;
   const DENIALS = [
     (n, by) => `Denied. 🙅 By then the kids will have no clothes, and they will not survive. Pick a date by ${by}.`,
     (n, by) => `${n} days away? The kids are shivering. Dramatically. They won't make it. 🥶 Pick a date by ${by}.`,
@@ -1409,7 +1405,9 @@ const CONFIG = {
     (n, by) => `No. The kids' survival depends on a date by ${by}. No pressure. (So much pressure.) 🧦`,
   ];
   let denials = 0;
-  const denialText = (s) => DENIALS[denials++ % DENIALS.length](daysUntil(s), shortDate(lastBookable()));
+  const denialText = (s) => bookingClosed()
+    ? `Booking closed on ${shortDate(BOOK_BY)}. The kids waited. They did not survive. 🥶 (Message ${ME} to negotiate a reprieve.)`
+    : DENIALS[denials++ % DENIALS.length](daysUntil(s), shortDate(BOOK_BY));
   const isWeekend = (s) => { const g = parseLocal(s).getDay(); return g === 0 || g === 6; };
   const monthKey = (d) => d.getFullYear() * 12 + d.getMonth();
   const calGrid = $("#cal-grid"), calPick = $("#cal-pick"), timeNote = $("#time-note");
@@ -1419,14 +1417,16 @@ const CONFIG = {
   function renderCal() {
     const y = calMonth.getFullYear(), m = calMonth.getMonth();
     const today = todayStr(), last = lastBookable();
-    $("#avail-last").textContent = shortDate(last);
+    $("#avail-cut").innerHTML = bookingClosed()
+      ? `Booking closed on <b>${shortDate(BOOK_BY)}</b>. 🥶`
+      : `Book by <b id="avail-last">${shortDate(BOOK_BY)}</b>: after that, the kids can't wait. 🥶`;
     $("#cal-title").textContent = new Intl.DateTimeFormat("en-IN", { month: "long", year: "numeric" }).format(calMonth);
     const lead = (new Date(y, m, 1).getDay() + 6) % 7; // Monday-first grid
     const count = new Date(y, m + 1, 0).getDate();
     let html = "<span></span>".repeat(lead);
     for (let d = 1; d <= count; d++) {
       const s = `${y}-${pad2(m + 1)}-${pad2(d)}`;
-      const off = s < today, late = s > last, taken = !off && !late && TAKEN[s], weekend = isWeekend(s);
+      const off = s < today, late = !off && s > last, taken = !off && !late && TAKEN[s], weekend = isWeekend(s);
       const cls = ["cal-day", weekend ? "weekend" : "weekday", taken && "taken", off && "off", late && "late",
         s === today && "today", s === selectedDate && "sel"].filter(Boolean).join(" ");
       const tag = off ? "" : late ? "🥶" : taken ? "📚" : weekend ? "✨" : "🌙";
