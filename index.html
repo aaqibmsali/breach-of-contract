@@ -294,7 +294,9 @@ input::placeholder, textarea::placeholder{color:#B59C8B}
 .seal-copy b{display:block; font-size:.92rem}
 .seal-copy span{display:block; font-size:.8rem; color:var(--ink-soft); line-height:1.35}
 .seal-spot{position:relative; flex:0 0 112px; height:96px}
-.seal-ph{position:absolute; inset:6px; border:2px dashed #D9C3AE; border-radius:50%; display:grid; place-items:center; font-family:var(--display); color:#B59C8B; font-size:1.2rem; transition:opacity .2s}
+.seal-ph{position:absolute; inset:6px; border:2px dashed #D9C3AE; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; font-family:var(--type); color:#A08877; transition:opacity .2s}
+.seal-ph span{font-size:1.3rem; line-height:1}
+.seal-ph small{font-size:.66rem; line-height:1.1; text-align:center; letter-spacing:.06em; text-transform:uppercase}
 .splat{position:absolute; inset:0; width:100%; height:100%; transform:scale(0); transform-origin:50% 60%}
 .seal-cake{position:absolute; left:50%; top:-18px; width:78px; margin-left:-39px; opacity:0; z-index:3}
 .mascot.seal{width:78px; margin:0}
@@ -353,6 +355,40 @@ legend em{font-style:normal; font-weight:400; color:var(--ink-soft); font-size:.
 .chip span:active{transform:scale(.96)}
 .chip input:checked + span{background:var(--ink); border-color:var(--ink); color:#fff}
 .err{color:var(--ribbon-dark); font-size:.88rem; font-weight:500; min-height:1.2em; margin:6px 0 0}
+.chip input:disabled + span{opacity:.38; text-decoration:line-through; cursor:not-allowed}
+
+/* Availability calendar */
+.avail{margin:0 0 8px; font-size:.86rem; color:var(--ink-soft); line-height:1.4}
+.cal{background:#fff; border:2px solid var(--line); border-radius:16px; padding:10px 8px 8px}
+.cal-head{display:flex; align-items:center; justify-content:space-between; padding:0 2px 8px}
+.cal-head b{font-weight:600}
+.cal-nav{width:42px; height:38px; border-radius:10px; border:2px solid var(--line); background:#fff; font:inherit; font-size:1.3rem; line-height:1; color:var(--ink); cursor:pointer; touch-action:manipulation}
+.cal-nav:disabled{opacity:.3; cursor:default}
+.cal-dow, .cal-grid{display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:4px}
+.cal-dow span{text-align:center; font-size:.66rem; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--ink-soft); padding-bottom:3px}
+.cal-dow span:nth-child(n+6){color:#9A6A00}
+.cal-day{
+  min-width:0; height:46px; padding:2px 0 0; border-radius:10px; border:1.5px solid transparent;
+  background:#FBF6EF; color:var(--ink); font:inherit; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+}
+.cal-day .n{font-weight:600; font-size:.92rem; line-height:1.1}
+.cal-day .t{font-size:.6rem; line-height:1.3; height:1.3em}
+.cal-day.weekend{background:#FFF1C9; border-color:#F3CF6B}
+.cal-day.taken{background:#EFE6DC; border-color:#E2D3C3; color:#A08877}
+.cal-day.taken .n{text-decoration:line-through}
+.cal-day.today{box-shadow:inset 0 0 0 1.5px var(--ink-soft)}
+.cal-day.off{opacity:.3; background:transparent; border-color:transparent; cursor:default}
+.cal-day.sel{background:var(--ink); border-color:var(--ink); color:#fff}
+.cal-day.shake{animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:none} 20%{transform:translateX(-4px)} 40%{transform:translateX(4px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(2px)}}
+.cal-legend{display:flex; flex-wrap:wrap; justify-content:center; gap:4px 12px; margin-top:8px; font-size:.74rem; color:var(--ink-soft)}
+.cal-legend .lg{display:inline-block; width:10px; height:10px; margin-right:4px; vertical-align:-1px; border-radius:3px; background:#FFF1C9; border:1.5px solid #F3CF6B}
+.cal-pick{margin:8px 0 0; font-size:.9rem; font-weight:500; line-height:1.4}
+.cal-pick:empty{display:none}
+.cal-day:focus-visible, .cal-nav:focus-visible{outline:3px solid var(--marigold); outline-offset:2px}
+
 #other-wrap{display:none; margin-top:10px}
 #other-wrap.show{display:block}
 
@@ -554,7 +590,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <h1 id="plan-h" tabindex="-1">A date, with paperwork.</h1>
       <p class="muted">Agenda for the first (and only) Breach Settlement Ceremony:</p>
       <ol class="plan">
-        <li><div class="ico" aria-hidden="true">☕</div><div><b>Chai</b><span>The opening session. Non‑negotiable. Milk: very negotiable. (Oat milk has been briefed.)</span></div></li>
+        <li><div class="ico" aria-hidden="true">☕</div><div><b>Chai</b><span>The opening session. Non‑negotiable. Black tea only; milk has not been invited.</span></div></li>
         <li><div class="ico" aria-hidden="true">✂️</div><div><b>Online ribbon‑cutting</b><span>Right after chai. A grand (virtual) inauguration of the drive.</span></div></li>
         <li><div class="ico" aria-hidden="true">🛍️</div><div><b>Buying clothes</b><span>₹2,000 budget. You get final say on every piece.</span></div></li>
         <li><div class="ico" aria-hidden="true">🧸</div><div><b>Donating to the orphanage</b><span>The whole point. The kids get the good stuff.</span></div></li>
@@ -578,7 +614,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <div class="ask-meta" id="ask-meta"></div>
       <div class="mascot-slot" id="ask-mascot" data-mood="hopeful"></div>
       <h1 id="ask-q" tabindex="-1" aria-live="polite">So, <span data-her></span>… will you go on this (slightly charitable) date with me?</h1>
-      <p id="ask-sub" class="muted">One chai (lactose‑free). One good deed. One fun thing of your choice. One choco lava cake.</p>
+      <p id="ask-sub" class="muted">One black tea (milk not invited). One good deed. One fun thing of your choice. One choco lava cake.</p>
       <div class="answers">
         <button class="btn btn-yes" id="yes-btn">Yes</button>
         <button class="btn btn-no" id="no-btn">No</button>
@@ -607,14 +643,14 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
         <div class="mascot-slot" data-kind="lava" data-mood="ecstatic"></div>
       </div>
       <h1 id="yes-h" class="yay" tabindex="-1" aria-label="You said yes!"></h1>
-      <p><b>Breach settled. Chai secured (oat milk).</b><br>Choco lava cake: on high alert. Orphanage: brace yourselves.</p>
+      <p><b>Breach settled. Black tea secured.</b><br>Choco lava cake: on high alert. Orphanage: brace yourselves.</p>
       <hr class="divider">
       <h2>One small formality.</h2>
       <p class="muted">Our first contract was famously unsigned. This one won't be.</p>
       <div class="agreement">
         <div class="title">THE DATE AGREEMENT</div>
         <ul class="terms">
-          <li>☕ One chai. Lactose‑free. Supervised.</li>
+          <li>☕ One chai: black tea, no milk. Supervised.</li>
           <li>✂️ One online ribbon‑cutting, right after chai.</li>
           <li>🛍️ ₹2,000 of clothes, sponsored by <span data-me></span>. You choose.</li>
           <li>🧸 One orphanage donation.</li>
@@ -630,7 +666,7 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
         <div class="seal-row">
           <div class="seal-copy"><b>Official seal</b><span>One (1) choco lava cake, ceremonially dropped.</span></div>
           <div class="seal-spot" id="seal-spot" aria-hidden="true">
-            <span class="seal-ph">🍫?</span>
+            <span class="seal-ph"><span>🍫</span><small>seal<br>here</small></span>
             <svg class="splat" viewBox="0 0 120 100">
               <path d="M60 16 C78 14 96 24 100 38 C110 42 115 55 107 64 C105 77 92 85 78 83 C74 93 66 97 61 89 C51 93 39 89 35 81 C21 83 11 70 15 60 C7 49 13 35 28 33 C32 23 46 16 60 16 Z" fill="#3B1A0B"/>
               <circle cx="12" cy="30" r="4.5" fill="#3B1A0B"/><circle cx="110" cy="28" r="3.5" fill="#3B1A0B"/>
@@ -659,20 +695,34 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
       <h1 id="form-h" tabindex="-1">When works for you?</h1>
       <p class="muted">Fill this in and your booking goes straight to the sponsor.</p>
       <form id="date-form" novalidate>
-        <label class="field">
-          <span>Date</span>
-          <input type="date" id="f-date" name="date" required>
-        </label>
-        <p class="err" id="e-date"></p>
+        <div class="field">
+          <span id="date-label">Date</span>
+          <p class="avail">Weekends: wide open, all day ✨ · Weekdays: I'm free at night only, like a superhero 🦇</p>
+          <div class="cal" role="group" aria-labelledby="date-label">
+            <div class="cal-head">
+              <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">‹</button>
+              <b id="cal-title" aria-live="polite"></b>
+              <button type="button" class="cal-nav" id="cal-next" aria-label="Next month">›</button>
+            </div>
+            <div class="cal-dow" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+            <div class="cal-grid" id="cal-grid"></div>
+            <div class="cal-legend" aria-hidden="true"><span><i class="lg"></i>Weekend: all day</span><span>🌙 Weekday: nights</span><span>📚 Taken</span></div>
+          </div>
+          <input type="hidden" id="f-date" name="date">
+          <p class="cal-pick" id="cal-pick" aria-live="polite"></p>
+        </div>
+        <p class="err" id="e-date" aria-live="polite"></p>
 
         <fieldset>
-          <legend>Time of day <em>(optional)</em></legend>
+          <legend>Time of day <em>(optional on weekends)</em></legend>
           <div class="chips">
             <label class="chip"><input type="radio" name="time" value="Morning"><span>☀️ Morning</span></label>
             <label class="chip"><input type="radio" name="time" value="Afternoon"><span>🌤️ Afternoon</span></label>
             <label class="chip"><input type="radio" name="time" value="Evening"><span>🌆 Evening</span></label>
-            <label class="chip"><input type="radio" name="time" value="Whenever"><span>🤷 Whenever</span></label>
+            <label class="chip"><input type="radio" name="time" value="Night"><span>🌙 Night</span></label>
+            <label class="chip"><input type="radio" name="time" value="All day"><span>✨ All day</span></label>
           </div>
+          <p class="note" id="time-note" aria-live="polite"></p>
         </fieldset>
 
         <fieldset>
@@ -696,11 +746,11 @@ body.party .t-perf::before, body.party .t-perf::after{background:#FFE7C2}
         <fieldset>
           <legend>Chai order <em>(optional; milk‑related choices are subject to review)</em></legend>
           <div class="chips">
-            <label class="chip"><input type="radio" name="chai" value="Oat milk masala"><span>🌾 Oat milk masala</span></label>
+            <label class="chip"><input type="radio" name="chai" value="Black masala chai"><span>🖤 Black masala chai</span></label>
             <label class="chip"><input type="radio" name="chai" value="Lemon tea"><span>🍋 Lemon tea (very responsible)</span></label>
             <label class="chip"><input type="radio" name="chai" value="Black adrak chai"><span>🫖 Black adrak (no cows involved)</span></label>
             <label class="chip"><input type="radio" name="chai" value="Regular milk chai"><span>🥛 Regular milk (needs approval)</span></label>
-            <label class="chip"><input type="radio" name="chai" value="Surprise me (lactose-free)"><span>✨ Surprise me (lactose‑free)</span></label>
+            <label class="chip"><input type="radio" name="chai" value="Surprise me (still black)"><span>✨ Surprise me (still black)</span></label>
           </div>
           <p class="note" id="milk-note" aria-live="polite"></p>
         </fieldset>
@@ -962,7 +1012,7 @@ const CONFIG = {
     ask() { stage = 0; renderStage(); },
     yes() { celebrate(); },
     form() {
-      const d = $("#f-date"); d.min = todayStr();
+      renderCal(); applyTimeRules();
     },
   };
   $("#verify-next").addEventListener("click", () => show("notice", "replace"));
@@ -979,9 +1029,9 @@ const CONFIG = {
   /* ---------------- The ask ---------------- */
   const STAGES = [
     { q: `So, ${HER}… will you go on this (slightly charitable) date with me?`,
-      sub: "One chai (lactose‑free). One good deed. One fun thing of your choice. One choco lava cake.",
+      sub: "One black tea (milk not invited). One good deed. One fun thing of your choice. One choco lava cake.",
       yes: "Yes", no: "No", mood: "hopeful" },
-    { q: "Are you sure? There's chai involved. Good chai. Lactose‑free chai. I've done research.",
+    { q: "Are you sure? There's chai involved. Good chai. Black tea, zero milk. I've done research.",
       sub: "The Yes button has been upgraded for your convenience.",
       yes: "Yes!", no: "No", mood: "worried" },
     { q: "Think of the children. (Literally. That's the whole plan.)",
@@ -1132,7 +1182,7 @@ const CONFIG = {
       }), 700 + i * 420);
     }
     later(() => Confetti.cannons(), 3300);
-    emojiRain(["☕", "🍫", "🌋", "🛍️", "👕", "🧸", "💛", "🎉", "✨", "👗", "🌾"], 42);
+    emojiRain(["☕", "🍫", "🌋", "🛍️", "👕", "🧸", "💛", "🎉", "✨", "👗", "🫖"], 42);
     requestAnimationFrame(sigSize);
   }
 
@@ -1336,6 +1386,87 @@ const CONFIG = {
   }
   const prettyDate = (s) => new Intl.DateTimeFormat("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(parseLocal(s));
 
+  /* ---------------- Availability calendar ---------------- */
+  // Edit freely: dates that are taken, which times work on weekdays, how far ahead to offer.
+  const TAKEN = { "2026-11-08": "I have book club that day. 📚 Being well‑read takes commitment." };
+  const WEEKDAY_TIMES = ["Night"];
+  const BOOK_AHEAD_DAYS = 120;
+
+  const toStr = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+  const addDays = (s, n) => { const d = parseLocal(s); d.setDate(d.getDate() + n); return toStr(d); };
+  const isWeekend = (s) => { const g = parseLocal(s).getDay(); return g === 0 || g === 6; };
+  const monthKey = (d) => d.getFullYear() * 12 + d.getMonth();
+  const calGrid = $("#cal-grid"), calPick = $("#cal-pick"), timeNote = $("#time-note");
+  let calMonth = (() => { const t = new Date(); return new Date(t.getFullYear(), t.getMonth(), 1); })();
+  let selectedDate = "", autoTime = false; // autoTime: Night was picked for her, not by her
+
+  function renderCal() {
+    const y = calMonth.getFullYear(), m = calMonth.getMonth();
+    const today = todayStr(), last = addDays(today, BOOK_AHEAD_DAYS);
+    $("#cal-title").textContent = new Intl.DateTimeFormat("en-IN", { month: "long", year: "numeric" }).format(calMonth);
+    const lead = (new Date(y, m, 1).getDay() + 6) % 7; // Monday-first grid
+    const count = new Date(y, m + 1, 0).getDate();
+    let html = "<span></span>".repeat(lead);
+    for (let d = 1; d <= count; d++) {
+      const s = `${y}-${pad2(m + 1)}-${pad2(d)}`;
+      const off = s < today || s > last, taken = !off && TAKEN[s], weekend = isWeekend(s);
+      const cls = ["cal-day", weekend ? "weekend" : "weekday", taken && "taken", off && "off",
+        s === today && "today", s === selectedDate && "sel"].filter(Boolean).join(" ");
+      const tag = off ? "" : taken ? "📚" : weekend ? "✨" : "🌙";
+      const what = taken ? "taken" : weekend ? "weekend, free all day" : "weekday, free at night";
+      html += `<button type="button" class="${cls}" data-date="${s}" aria-label="${prettyDate(s)}, ${what}"`
+        + ` aria-pressed="${s === selectedDate}"${off ? " disabled" : ""}${taken ? ' aria-disabled="true"' : ""}>`
+        + `<span class="n">${d}</span><span class="t" aria-hidden="true">${tag}</span></button>`;
+    }
+    calGrid.innerHTML = html;
+    const now = new Date();
+    $("#cal-prev").disabled = monthKey(calMonth) <= monthKey(now);
+    $("#cal-next").disabled = monthKey(calMonth) >= monthKey(parseLocal(last));
+  }
+
+  function applyTimeRules() {
+    const weekday = selectedDate && !isWeekend(selectedDate);
+    if (!weekday && autoTime) { // back on a weekend: undo the Night we chose for her
+      const c = form.querySelector('input[name="time"]:checked'); if (c) c.checked = false;
+      autoTime = false;
+    }
+    $$('input[name="time"]', form).forEach((r) => {
+      r.disabled = weekday && !WEEKDAY_TIMES.includes(r.value);
+      if (r.disabled) r.checked = false;
+    });
+    if (weekday && !form.querySelector('input[name="time"]:checked')) {
+      const night = form.querySelector(`input[name="time"][value="${WEEKDAY_TIMES[0]}"]`);
+      if (night) { night.checked = true; autoTime = true; }
+    }
+    timeNote.textContent = !selectedDate ? ""
+      : weekday ? "Weekdays: nights only 🌙 (daytime is booked by adulting)."
+      : "It's a weekend, so anything goes. ✨";
+  }
+
+  function pickDate(s) {
+    selectedDate = s; $("#f-date").value = s; $("#e-date").textContent = "";
+    calPick.textContent = isWeekend(s)
+      ? `${prettyDate(s)} · ✨ Wide open, all day. Perfect.`
+      : `${prettyDate(s)} · 🌙 Night only. Heads up: the full agenda fits best on a weekend.`;
+    renderCal(); applyTimeRules();
+    const btn = calGrid.querySelector(`[data-date="${s}"]`); if (btn) btn.focus({ preventScroll: true });
+  }
+
+  calGrid.addEventListener("click", (e) => {
+    const btn = e.target.closest(".cal-day");
+    if (!btn || btn.disabled) return;
+    const s = btn.dataset.date;
+    if (TAKEN[s]) {
+      $("#e-date").textContent = `${prettyDate(s)} is taken: ${TAKEN[s]}`;
+      btn.classList.remove("shake"); void btn.offsetWidth; btn.classList.add("shake");
+      vibrate([20, 30, 20]);
+      return;
+    }
+    pickDate(s);
+  });
+  $("#cal-prev").addEventListener("click", () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() - 1, 1); renderCal(); });
+  $("#cal-next").addEventListener("click", () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 1); renderCal(); });
+
   const form = $("#date-form");
   form.addEventListener("change", (e) => {
     if (e.target.name === "activity") {
@@ -1344,7 +1475,7 @@ const CONFIG = {
       if (other) $("#f-other").focus();
       $("#e-activity").textContent = "";
     }
-    if (e.target.id === "f-date") $("#e-date").textContent = "";
+    if (e.target.name === "time") autoTime = false;
     if (e.target.name === "chai") {
       $("#milk-note").textContent = e.target.value === "Regular milk chai"
         ? "Request forwarded to the Department of Dairy Regulation (it's me). Status: pending. 👀"
@@ -1361,8 +1492,11 @@ const CONFIG = {
     const other = $("#f-other").value.trim();
     $("#e-date").textContent = ""; $("#e-activity").textContent = "";
     let ok = true;
-    if (!date) { $("#e-date").textContent = "Pick a day. Any day. (Well, a future one.)"; ok = false; }
+    const time = (form.querySelector('input[name="time"]:checked') || {}).value;
+    if (!date) { $("#e-date").textContent = "Pick a day on the calendar. Weekends are extra welcome. ✨"; ok = false; }
     else if (date < todayStr()) { $("#e-date").textContent = "Time travel isn't in the ₹2,000 budget. Pick a future date."; ok = false; }
+    else if (TAKEN[date]) { $("#e-date").textContent = `${prettyDate(date)} is taken: ${TAKEN[date]}`; ok = false; }
+    else if (!isWeekend(date) && time && !WEEKDAY_TIMES.includes(time)) { $("#e-date").textContent = "Weekdays are nights only, I'm afraid. 🌙"; ok = false; }
     if (!act) { $("#e-activity").textContent = "Pick your fun activity. It's the best part."; ok = false; }
     else if (act === "__other" && !other) { $("#e-activity").textContent = "Tell me what the something else is!"; ok = false; }
     if (!ok) {
@@ -1374,9 +1508,9 @@ const CONFIG = {
     const chai = (form.querySelector('input[name="chai"]:checked') || {}).value;
     booking = {
       date,
-      time: (form.querySelector('input[name="time"]:checked') || {}).value || "Whenever works",
+      time: time || "Whenever works (it's a weekend)",
       activity: act === "__other" ? other : act,
-      chai: !chai ? "Sponsor's choice (lactose-free, obviously)"
+      chai: !chai ? "Sponsor's choice (black, obviously)"
         : chai === "Regular milk chai" ? "Regular milk chai (pending approval 👀)" : chai,
       dessert: (form.querySelector('input[name="dessert"]:checked') || {}).value || "Choco lava cake",
       notes: $("#f-notes").value.trim(),

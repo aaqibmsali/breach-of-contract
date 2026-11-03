@@ -16,19 +16,25 @@ from repository **secrets** and publishes the result to GitHub Pages.
 1. **Identity check**: "Is your name ___?" No → asks once more → "Please identify yourself" → asks them to exit calmly.
    If they then type her name in the box, it calls them out.
 2. **Verification** (fake scan) → **Official Notice**: the sender confesses to the breach, with a scoreboard
-   (him: 1 breach; her: 0 breaches, ₹5,000 untouched 🏆) → **The plan**: chai (lactose‑free, supervised),
+   (him: 1 breach; her: 0 breaches, ₹5,000 untouched 🏆) → **The plan**: chai (black tea, milk not invited),
    online ribbon‑cutting right after chai, buying clothes, the orphanage donation, a fun activity of her choice,
    and a bonus choco lava cake ("diplomatic immunity").
 3. **The question**. Each "No" escalates, and Yes grows while No shrinks every time:
-   plain ask → "lactose‑free chai, I've done research" → No button runs away → a reserved lava cake that will go uneaten,
+   plain ask → "black tea, zero milk, I've done research" → No button runs away → a reserved lava cake that will go uneaten,
    then *Error 418: I'm a teapot (we're out of milk, on purpose)* → No needs a 2.5s press‑and‑hold.
    After the 5th No it accepts gracefully, with a small "I changed my mind" link.
 4. **Yes** → confetti, emoji rain, fanfare and vibration, with the chai cup and a choco lava cake dancing.
    She then **signs the Date Agreement with her finger** (the original contract was famously unsigned), and a
    choco lava cake drops from the sky as the official **seal**. If she skips signing, it signs her name in handwriting for her.
-5. **Booking form** (date, time, fun activity, chai order with a "Department of Dairy Regulation" for regular milk,
-   dessert where every option is choco lava cake, notes) → **ticket** with a countdown and a **Send on WhatsApp**
-   button with the message already filled in.
+5. **Booking form**:
+   - An **availability calendar**: weekends are free all day (✨), weekdays are nights only (🌙), and taken dates (📚)
+     can't be picked. Picking a weekday locks the time to Night.
+   - Then the fun activity, a black‑tea chai order (with a "Department of Dairy Regulation" for regular milk),
+     dessert (every option is choco lava cake) and notes.
+   - Submitting shows a **ticket** with a countdown and a **Send on WhatsApp** button with the message already filled in.
+
+   To change availability, edit `TAKEN`, `WEEKDAY_TIMES` and `BOOK_AHEAD_DAYS` in the
+   "Availability calendar" block of `index.html`.
 
 ## Setup
 
